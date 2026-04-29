@@ -1,34 +1,25 @@
-#include <stdio.h>
-#include "freertos/FreeRTOS.h"
-#include "freertos/task.h"
-#include "driver/gpio.h" // Librería nativa del ESP32 para controlar los pines
+#include <Arduino.h> // Incluye la librería base para que los comandos funcionen en el ESP32
 
-// Definimos el pin del LED que vamos a utilizar (GPIO 22)
-#define LED_PIN GPIO_NUM_22
+// Define una constante entera para guardar el número del pin donde está conectado el LED (pin 22)
+const int ledPin = 22;
 
-// En el entorno nativo del ESP32 (ESP-IDF), el programa siempre inicia en 'app_main'
-// Se usa extern "C" para que el compilador de C++ lo reconozca correctamente.
-extern "C" void app_main(void) {
-    
-    // 1. Preparamos el pin
-    gpio_reset_pin(LED_PIN);
-    
-    // 2. Configuramos el pin GPIO 22 como salida (OUTPUT)
-    gpio_set_direction(LED_PIN, GPIO_MODE_OUTPUT);
+// La función setup se ejecuta una sola vez cada vez que el ESP32 se enciende o reinicia
+void setup() {
+  // Configura el pin 22 (ledPin) como una salida de energía (OUTPUT) para poder enviar voltaje
+  pinMode(ledPin, OUTPUT);
+}
 
-    // 3. Creamos un bucle infinito (similar al loop de Arduino)
-    while (true) {
-        // Encendemos el LED (1 = HIGH / Encendido)
-        gpio_set_level(LED_PIN, 1);
-        
-        // Esperamos 1000 milisegundos (1 segundo). 
-        // En el ESP32 nativo usamos vTaskDelay del sistema operativo FreeRTOS.
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-
-        // Apagamos el LED (0 = LOW / Apagado)
-        gpio_set_level(LED_PIN, 0);
-        
-        // Esperamos otros 1000 milisegundos
-        vTaskDelay(1000 / portTICK_PERIOD_MS);
-    }
+// La función loop se ejecuta de forma repetitiva e infinita después del setup
+void loop() {
+  // Envía un nivel alto de energía (HIGH) al pin 22 para encender el LED
+  digitalWrite(ledPin, HIGH);
+  
+  // Pausa el programa durante 1000 milisegundos (1 segundo) manteniendo el LED encendido
+  delay(1000);                
+  
+  // Envía un nivel bajo de energía (LOW) al pin 22, cortando el voltaje para apagar el LED
+  digitalWrite(ledPin, LOW);  
+  
+  // Pausa el programa durante 1000 milisegundos (1 segundo) manteniendo el LED apagado antes de repetir
+  delay(1000);               
 }
