@@ -1,5 +1,3 @@
-#include <Arduino.h> // Incluye la librería base para que los comandos funcionen en el ESP32
-
 // Define una constante entera para guardar el número del pin donde está conectado el LED (pin 22)
 const int ledPin = 22;
 
