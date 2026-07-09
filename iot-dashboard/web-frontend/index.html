@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Dashboard IoT de última generación para monitoreo de telemetría de dispositivos ESP32 y redes LoRaWAN.">
+  <title>LoRaWAN IoT Telemetry Dashboard</title>
+
+  <!-- Google Fonts: Outfit (Titulares) & Inter (Lectura) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- Chart.js para el Dashboard de variables -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <!-- Estilos Premium -->
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+  <!-- Grain Overlay para textura visual premium -->
+  <div class="grain-overlay"></div>
+
+  <!-- Navbar -->
+  <header class="navbar">
+    <div class="navbar-container">
+      <a href="#/" class="logo-link">
+        <div class="logo">
+          <div class="logo-icon"></div>
+          <span>LORA<span class="highlight">NODE</span></span>
+        </div>
+      </a>
+      
+      <nav class="nav-menu" id="navMenu">
+        <a href="#/" class="nav-item active" data-route="landing">Inicio</a>
+        <a href="#/dashboard" class="nav-item private-route hidden" data-route="dashboard">Dashboard</a>
+        <a href="#/data" class="nav-item private-route hidden" data-route="data">Historial</a>
+        <a href="#/login" class="nav-btn" id="authBtn">Ingresar</a>
+      </nav>
+
+      <!-- Botón menú móvil -->
+      <button class="mobile-menu-toggle" id="mobileMenuBtn" aria-label="Abrir menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- Contenedor Principal de la App (SPA) -->
+  <main id="app" class="app-container">
+    <div class="loader-container">
+      <div class="loader"></div>
+      <p>Cargando aplicación IoT...</p>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="footer-container">
+      <p>&copy; 2026 LoraNode. Diseñado para monitoreo IoT industrial y redes LoRaWAN.</p>
+      <div class="status-indicator">
+        <span class="status-dot online"></span>
+        <span>Servicios Cloud Activos</span>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Script principal de la aplicación (como módulo de ES) -->
+  <script type="module" src="js/app.js"></script>
+</body>
+</html>

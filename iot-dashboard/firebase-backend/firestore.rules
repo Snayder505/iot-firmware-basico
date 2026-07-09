@@ -1,0 +1,28 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    
+    // Reglas para la colección de usuarios
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Reglas para la colección de dispositivos
+    match /devices/{deviceId} {
+      // Cualquier usuario autenticado puede listar dispositivos
+      allow read: if request.auth != null;
+      // Solo el propietario puede crear o editar metadatos del dispositivo
+      allow write: if request.auth != null && (resource == null || resource.data.ownerUid == request.auth.uid);
+    }
+    
+    // Reglas para las telemetrías/variables
+    match /telemetry/{telemetryId} {
+      // Lectura permitida a usuarios autenticados
+      allow read: if request.auth != null;
+      // ESCRITURA DENEGADA desde el cliente (Frontend).
+      // Los datos sólo pueden ser inyectados de forma segura mediante Firebase Cloud Functions (Admin SDK)
+      allow write: if false;
+    }
+  }
+}
