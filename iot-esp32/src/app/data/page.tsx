@@ -13,8 +13,11 @@ interface SensorData {
   id: string;
   deviceId?: string;
   device_id?: string;
-  temperature: number;
-  humidity: number;
+  dispositivoId?: string;
+  temperature?: number;
+  temperatura?: number;
+  humidity?: number;
+  humedad?: number;
   timestamp: any;
 }
 
@@ -180,18 +183,18 @@ export default function DataPage() {
                     {data.map((item) => (
                       <tr key={item.id} className="hover:bg-slate-800/20 transition-colors duration-200">
                         <td className="p-4 text-sm font-mono text-indigo-300">
-                          {item.deviceId || item.device_id || "ESP32-Default"}
+                          {item.deviceId || item.device_id || item.dispositivoId || "ESP32-Default"}
                         </td>
                         <td className="p-4">
                           <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-rose-400">
                             <Thermometer className="h-4 w-4" />
-                            {item.temperature}°C
+                            {item.temperature ?? item.temperatura ?? 0}°C
                           </span>
                         </td>
                         <td className="p-4">
                           <span className="inline-flex items-center gap-1.5 text-sm font-semibold text-cyan-400">
                             <Droplets className="h-4 w-4" />
-                            {item.humidity}%
+                            {item.humidity ?? item.humedad ?? 0}%
                           </span>
                         </td>
                         <td className="p-4 text-sm text-slate-400">

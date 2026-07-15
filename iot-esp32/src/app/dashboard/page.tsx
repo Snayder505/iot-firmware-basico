@@ -23,8 +23,11 @@ interface SensorData {
   id: string;
   deviceId?: string;
   device_id?: string;
-  temperature: number;
-  humidity: number;
+  dispositivoId?: string;
+  temperature?: number;
+  temperatura?: number;
+  humidity?: number;
+  humedad?: number;
   timestamp: any;
 }
 
@@ -100,8 +103,8 @@ export default function DashboardPage() {
   const chartData = data.map((item) => ({
     ...item,
     hora: formatXAxis(item.timestamp),
-    Temperatura: item.temperature,
-    Humedad: item.humidity,
+    Temperatura: item.temperature ?? item.temperatura ?? 0,
+    Humedad: item.humidity ?? item.humedad ?? 0,
   }));
 
   const formatTimestamp = (ts: any) => {
@@ -223,7 +226,7 @@ export default function DashboardPage() {
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Temperatura</p>
-                      <h3 className="text-4xl font-extrabold text-rose-400 mt-2">{lastRecord.temperature}°C</h3>
+                      <h3 className="text-4xl font-extrabold text-rose-400 mt-2">{(lastRecord.temperature ?? lastRecord.temperatura ?? 0)}°C</h3>
                     </div>
                     <div className="h-12 w-12 rounded-2xl bg-rose-500/10 text-rose-400 flex items-center justify-center">
                       <Thermometer className="h-6 w-6" />
@@ -241,7 +244,7 @@ export default function DashboardPage() {
                   <div className="flex justify-between items-start mb-4">
                     <div>
                       <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider">Humedad Relativa</p>
-                      <h3 className="text-4xl font-extrabold text-cyan-400 mt-2">{lastRecord.humidity}%</h3>
+                      <h3 className="text-4xl font-extrabold text-cyan-400 mt-2">{(lastRecord.humidity ?? lastRecord.humedad ?? 0)}%</h3>
                     </div>
                     <div className="h-12 w-12 rounded-2xl bg-cyan-500/10 text-cyan-400 flex items-center justify-center">
                       <Droplets className="h-6 w-6" />
@@ -283,7 +286,7 @@ export default function DashboardPage() {
                     </div>
                   </div>
                   <div className="flex items-center gap-1.5 text-[11px] text-slate-500 mt-4 border-t border-slate-800/60 pt-3">
-                    <span className="font-mono text-indigo-400 font-semibold">{lastRecord.deviceId || lastRecord.device_id || "ESP32-Default"}</span>
+                    <span className="font-mono text-indigo-400 font-semibold">{lastRecord.deviceId || lastRecord.device_id || lastRecord.dispositivoId || "ESP32-Default"}</span>
                   </div>
                 </div>
 

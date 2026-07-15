@@ -72,8 +72,8 @@
     onSnapshot(q, (snapshot) => {
       snapshot.forEach((doc) => {
         const data = doc.data();
-        document.getElementById("temp-val").innerText = `${data.temperature.toFixed(1)} °C`;
-        document.getElementById("hum-val").innerText = `${data.humidity.toFixed(1)} %`;
+        document.getElementById("temp-val").innerText = `${(data.temperatura ?? 0).toFixed(1)} °C`;
+        document.getElementById("hum-val").innerText = `${(data.humedad ?? 0).toFixed(1)} %`;
         document.getElementById("disp-id").innerText = data.dispositivoId || "Desconocido";
         if (data.timestamp) {
           const date = data.timestamp.toDate();
