@@ -8,3 +8,4 @@ dist/
 out/
 .env.local
 .env.*.local
+.vercel
