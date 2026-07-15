@@ -1,614 +1,86 @@
 <!DOCTYPE html>
-<html lang="es" class="scroll-smooth">
+<html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="MISS.IA — AGENTES DE INTELIGENCIA ARTIFICIAL PARA PYMES EN LATAM. DEJA DE APAGAR INCENDIOS Y EMPIEZA A ESCALAR.">
-  <title>MISS.IA — AGENTES IA PARA PYMEs EN LATAM</title>
-
-  <!-- Google Fonts: Anton & Condiment -->
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Anton&family=Condiment&display=swap" rel="stylesheet">
-
-  <!-- Tailwind CSS via CDN -->
+  <title>Dashboard IoT - ESP32</title>
   <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      theme: {
-        extend: {
-          fontFamily: {
-            grotesk: ['Anton', 'sans-serif'],
-            condiment: ['Condiment', 'cursive'],
-            mono: ['monospace'],
-          },
-          colors: {
-            navy: '#010828',
-            cream: '#EFF4FF',
-            neon: 'var(--accent)',
-          },
-        }
-      }
-    }
-  </script>
-
-  <!-- Custom Styles for Liquid Glass, Grain Texture, and Transitions -->
-  <style>
-    :root {
-      --accent: #6FFF00;
-    }
-
-    body {
-      background-color: #010828;
-      color: #EFF4FF;
-      overflow-x: hidden;
-    }
-
-    /* Liquid Glass UI Effect */
-    .liquid-glass {
-      background: rgba(255, 255, 255, 0.01);
-      background-blend-mode: luminosity;
-      backdrop-filter: blur(4px);
-      -webkit-backdrop-filter: blur(4px);
-      border: none;
-      box-shadow: inset 0 1px 1px rgba(255, 255, 255, 0.1);
-      position: relative;
-      overflow: hidden;
-    }
-
-    .liquid-glass::before {
-      content: '';
-      position: absolute;
-      inset: 0;
-      border-radius: inherit;
-      padding: 1.4px;
-      background: linear-gradient(180deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.15) 20%, rgba(255, 255, 255, 0) 40%, rgba(255, 255, 255, 0) 60%, rgba(255, 255, 255, 0.15) 80%, rgba(255, 255, 255, 0.45) 100%);
-      -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-      -webkit-mask-composite: xor;
-      mask-composite: exclude;
-      pointer-events: none;
-    }
-
-    /* Grain Texture Overlay */
-    .grain-overlay {
-      position: fixed;
-      inset: 0;
-      z-index: 50;
-      pointer-events: none;
-      opacity: 0.6;
-      mix-blend-mode: lighten;
-      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
-      background-size: cover;
-    }
-
-    /* Hide scrollbar utility */
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
-  </style>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
-<body class="font-mono selection:bg-neon selection:text-navy">
-
-  <!-- Grain Texture Overlay -->
-  <div class="grain-overlay"></div>
-
-  <!-- SECTION 1: HERO (Full viewport) -->
-  <section id="inicio" class="relative min-h-screen lg:h-screen w-full flex flex-col justify-between overflow-hidden rounded-b-[32px] bg-navy">
-    <!-- Full-bleed background video -->
-    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none">
-      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_045634_e1c98c76-1265-4f5c-882a-4276f2080894.mp4" type="video/mp4">
-    </video>
-    <!-- Semi-transparent overlay layer for legibility -->
-    <div class="absolute inset-0 bg-[#010828]/65 z-10"></div>
-
-    <!-- Container -->
-    <div class="relative w-full max-w-[1831px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24 z-20 flex-grow flex flex-col justify-between">
-      
-      <!-- Header -->
-      <header class="w-full grid grid-cols-2 lg:grid-cols-3 items-center py-6 sm:py-8">
-        <!-- Logo -->
-        <div class="font-grotesk text-[16px] uppercase tracking-wider text-cream">MISS.IA</div>
-        
-        <!-- Navigation bar (hidden on mobile) -->
-        <nav class="hidden lg:block justify-self-center liquid-glass rounded-[28px] px-[52px] py-[24px]">
-          <ul class="flex space-x-12">
-            <li><a href="#inicio" class="font-grotesk text-[13px] uppercase text-cream hover:text-neon transition-colors duration-300">INICIO</a></li>
-            <li><a href="#viviane" class="font-grotesk text-[13px] uppercase text-cream hover:text-neon transition-colors duration-300">SISTEMAS</a></li>
-            <li><a href="#resultados" class="font-grotesk text-[13px] uppercase text-cream hover:text-neon transition-colors duration-300">RESULTADOS</a></li>
-            <li><a href="javascript:void(0)" onclick="openFaqModal()" class="font-grotesk text-[13px] uppercase text-cream hover:text-neon transition-colors duration-300">FAQ</a></li>
-            <li><a href="#contacto" class="font-grotesk text-[13px] uppercase text-cream hover:text-neon transition-colors duration-300">CONTACTO</a></li>
-          </ul>
-        </nav>
-
-        <!-- Right Side spacer for desktop centering -->
-        <div class="hidden lg:block w-full"></div>
-      </header>
-
-      <!-- Desktop Floating Social Icons (Top-Right) -->
-      <div class="absolute top-[160px] right-6 sm:right-12 md:right-16 lg:right-24 z-20 flex-col gap-4 hidden lg:flex">
-        <!-- Instagram -->
-        <a href="https://instagram.com" target="_blank" aria-label="INSTAGRAM" class="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-all duration-300">
-          <svg class="w-[20px] h-[20px] stroke-cream" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-            <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-            <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-          </svg>
-        </a>
-        <!-- Mail -->
-        <a href="mailto:hola@miss.ia" aria-label="CORREO ELECTRÓNICO" class="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-all duration-300">
-          <svg class="w-[20px] h-[20px] stroke-cream" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-            <polyline points="22,6 12,13 2,6"></polyline>
-          </svg>
-        </a>
-        <!-- LinkedIn -->
-        <a href="https://linkedin.com" target="_blank" aria-label="LINKEDIN" class="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-all duration-300">
-          <svg class="w-[20px] h-[20px] stroke-cream" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-            <rect x="2" y="9" width="4" height="12"></rect>
-            <circle cx="4" cy="4" r="2"></circle>
-          </svg>
-        </a>
-      </div>
-
-      <!-- Hero Content (bottom-left) -->
-      <div class="mt-auto mb-12 sm:mb-20 lg:mb-24 flex flex-col justify-end">
-        <div class="relative w-full max-w-[820px] lg:ml-32">
-          <!-- Large Heading -->
-          <h1 class="font-grotesk text-[40px] sm:text-[60px] md:text-[75px] lg:text-[90px] uppercase leading-[1.05] sm:leading-[1] tracking-tight text-cream">
-            DEJA DE APAGAR INCENDIOS Y EMPIEZA A ESCALAR
-          </h1>
-          <!-- Overlaid cursive accent -->
-          <span class="font-condiment text-neon normal-case text-[24px] sm:text-[32px] md:text-[40px] lg:text-[48px] absolute -right-2 bottom-0 sm:-right-8 sm:-bottom-2 lg:-right-16 lg:-bottom-4 -rotate-1 mix-blend-exclusion opacity-90 pointer-events-none select-none">
-            operational prosperity
-          </span>
+<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between">
+  <header class="bg-slate-800 p-5 shadow-lg border-b border-slate-700">
+    <div class="container mx-auto flex justify-between items-center">
+      <h1 class="text-2xl font-bold tracking-wider text-teal-400">
+        <i class="fa-solid fa-microchip mr-2"></i>Dashboard Telemetría IoT
+      </h1>
+      <span class="bg-emerald-500 text-slate-950 px-3 py-1 rounded-full text-xs font-bold animate-pulse">
+        <i class="fa-solid fa-circle mr-1"></i>En Vivo
+      </span>
+    </div>
+  </header>
+  <main class="container mx-auto p-6 flex-grow">
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
+      <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700 flex items-center justify-between">
+        <div>
+          <p class="text-slate-400 font-semibold uppercase text-sm tracking-wider">Temperatura</p>
+          <h2 id="temp-val" class="text-5xl font-extrabold mt-2 text-orange-500">-- °C</h2>
         </div>
-
-        <!-- Description Paragraph -->
-        <p class="font-mono text-[12px] sm:text-[13px] uppercase text-cream/80 max-w-[520px] mt-8 sm:mt-10 lg:ml-32 leading-relaxed">
-          AGENTES IA IMPLEMENTADOS EN PYMEs DE LATAM PARA QUE RECUPERES TU TIEMPO Y TU NEGOCIO DEJE DE DEPENDER DEL CAOS.
-        </p>
-
-        <!-- Mobile Floating Social Icons (below lg) -->
-        <div class="flex lg:hidden justify-center gap-4 mt-8 pb-4">
-          <!-- Instagram -->
-          <a href="https://instagram.com" target="_blank" aria-label="INSTAGRAM" class="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-all duration-300">
-            <svg class="w-[20px] h-[20px] stroke-cream" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <!-- Mail -->
-          <a href="mailto:hola@miss.ia" aria-label="CORREO ELECTRÓNICO" class="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-all duration-300">
-            <svg class="w-[20px] h-[20px] stroke-cream" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-          </a>
-          <!-- LinkedIn -->
-          <a href="https://linkedin.com" target="_blank" aria-label="LINKEDIN" class="w-[56px] h-[56px] flex items-center justify-center liquid-glass rounded-[1rem] hover:bg-white/10 transition-all duration-300">
-            <svg class="w-[20px] h-[20px] stroke-cream" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-              <rect x="2" y="9" width="4" height="12"></rect>
-              <circle cx="4" cy="4" r="2"></circle>
-            </svg>
-          </a>
+        <div class="text-5xl text-orange-500/20 bg-orange-500/10 p-4 rounded-full">
+          <i class="fa-solid fa-temperature-high animate-bounce"></i>
+        </div>
+      </div>
+      <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700 flex items-center justify-between">
+        <div>
+          <p class="text-slate-400 font-semibold uppercase text-sm tracking-wider">Humedad</p>
+          <h2 id="hum-val" class="text-5xl font-extrabold mt-2 text-cyan-400">-- %</h2>
+        </div>
+        <div class="text-5xl text-cyan-400/20 bg-cyan-400/10 p-4 rounded-full">
+          <i class="fa-solid fa-droplet animate-pulse"></i>
         </div>
       </div>
     </div>
-  </section>
-
-  <!-- SECTION 2: SOBRE VIVIANE (Full viewport) -->
-  <section id="viviane" class="relative min-h-screen lg:h-screen w-full flex flex-col justify-between overflow-hidden bg-navy">
-    <!-- Full-bleed background video -->
-    <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none">
-      <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_151551_992053d1-3d3e-4b8c-abac-45f22158f411.mp4" type="video/mp4">
-    </video>
-    <!-- Semi-transparent overlay layer for legibility -->
-    <div class="absolute inset-0 bg-[#010828]/70 z-10"></div>
-
-    <!-- Container -->
-    <div class="relative w-full max-w-[1831px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24 py-16 lg:py-24 z-20 flex-grow flex flex-col justify-between gap-12 sm:gap-20">
-      
-      <!-- Top Row (flex row on desktop, column on mobile, space-between) -->
-      <div class="flex flex-col lg:flex-row justify-between items-start w-full gap-8">
-        <!-- Left: Heading -->
-        <div class="relative">
-          <h2 class="font-grotesk text-[32px] sm:text-[45px] md:text-[52px] lg:text-[60px] uppercase text-cream tracking-tight leading-none">
-            HOLA! SOY VIVIANE
-          </h2>
-          <!-- Overlaid script -->
-          <span class="font-condiment text-neon normal-case text-[36px] sm:text-[48px] md:text-[58px] lg:text-[68px] absolute -right-8 -bottom-6 sm:-right-12 sm:-bottom-8 -rotate-2 mix-blend-exclusion opacity-90 pointer-events-none select-none">
-            miss.ia
-          </span>
-        </div>
-
-        <!-- Right: Short personal paragraph & Neon line -->
-        <div class="flex flex-col max-w-[320px] lg:text-left">
-          <p class="font-mono text-[14px] sm:text-[15px] lg:text-[16px] uppercase text-cream leading-relaxed">
-            NO ME GUSTAN LAS REDES. ESTOY AQUÍ POR UNA SOLA RAZÓN: ESTOY CONVENCIDA DE QUE PUEDO AGREGARTE VALOR REAL. EL DÍA QUE DEJE DE HACERLO, CIERRO EL PERFIL. SIN DRAMA.
-          </p>
-          <p class="text-neon font-mono text-[12px] sm:text-[13px] lg:text-[14px] uppercase font-bold mt-4 tracking-wide leading-relaxed border-l-2 border-neon pl-4">
-            MÁS DE 300 AGENTES IA IMPLEMENTADOS EN PYMEs DE LATAM.
-          </p>
-        </div>
-      </div>
-
-      <!-- Bottom Row (flex row, space-between, items-end, mt-20) -->
-      <div class="flex flex-col lg:flex-row justify-between items-end w-full gap-10 mt-auto">
-        <!-- Left Bio columns -->
-        <div class="flex flex-col sm:flex-row gap-6 sm:gap-12 w-full lg:max-w-[850px] text-left">
-          <div class="flex-1">
-            <p class="font-mono text-[13px] sm:text-[14px] lg:text-[15px] uppercase text-cream/90 leading-relaxed">
-              MÁS DE UNA DÉCADA EN EL ECOSISTEMA: MARKETING EN CPGS GLOBALES, BANCA DE INVERSIÓN EN PANAMÁ, VC EN NUEVA YORK Y ESG CON 600MM BAJO GESTIÓN.
-            </p>
-          </div>
-          <div class="flex-1">
-            <p class="font-mono text-[13px] sm:text-[14px] lg:text-[15px] uppercase text-cream/40 leading-relaxed border-t border-white/10 sm:border-t-0 pt-4 sm:pt-0">
-              FUNDÉ KAIROS EN ECUADOR Y PANAMÁ. NO HABLO DE NEGOCIOS DESDE LA TEORÍA.
-            </p>
-          </div>
-        </div>
-
-        <!-- Right stats columns (hidden below lg) -->
-        <div class="hidden lg:flex flex-col gap-6 max-w-[380px] text-right">
-          <p class="font-mono text-[13px] lg:text-[14px] uppercase text-cream/40 leading-relaxed">
-            SOPORTE AL CLIENTE RESUELTO UN 85% MÁS RÁPIDO CON EQUIPOS AI-FIRST. TIEMPO DE ENTREGA PARA PYMEs REDUCIDO A LA MITAD.
-          </p>
-          <p class="font-mono text-[12px] lg:text-[13px] uppercase text-cream/20 leading-relaxed border-t border-white/5 pt-4">
-            CONSTRUÍ DESDE CERO EL EQUIPO DE DATA ANALYTICS Y LA RED DE DEVELOPERS PARTNER.
-          </p>
-        </div>
-      </div>
+    <div class="max-w-4xl mx-auto mt-6 bg-slate-800/50 border border-slate-700/50 p-4 rounded-xl text-center">
+      <p class="text-slate-400 text-sm">
+        ID Dispositivo: <span id="disp-id" class="text-teal-400 font-mono font-bold">--</span> | 
+        Última actualización: <span id="last-time" class="text-white font-semibold">--</span>
+      </p>
     </div>
-  </section>
+  </main>
+  <footer class="bg-slate-950 p-4 text-center text-xs text-slate-500 border-t border-slate-900">
+    <p>Desarrollado para Monitoreo de Sensores ESP32</p>
+  </footer>
 
-  <!-- SECTION 3: RESULTADOS GRID -->
-  <section id="resultados" class="relative w-full bg-navy py-20 lg:py-28">
-    <div class="w-full max-w-[1831px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24">
-      
-      <!-- Header Row (flex, space-between, items-end) -->
-      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-end gap-8 mb-16 sm:mb-20">
-        <!-- Left: Heading -->
-        <h2 class="font-grotesk text-[32px] sm:text-[45px] md:text-[52px] lg:text-[60px] uppercase leading-none tracking-tight text-cream">
-          <div>RESULTADOS DE</div>
-          <div class="ml-12 sm:ml-24 lg:ml-32 mt-2 flex items-baseline gap-3 flex-wrap">
-            <span class="font-condiment text-neon normal-case text-[36px] sm:text-[52px] md:text-[62px] lg:text-[68px] -rotate-[3deg] inline-block">sistemas</span>
-            <span>REALES</span>
-          </div>
-        </h2>
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
+    import { getFirestore, collection, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-        <!-- Right: Interactive Button -->
-        <button onclick="openFaqModal()" class="group flex flex-col items-stretch text-left flex-shrink-0 cursor-pointer">
-          <div class="flex items-center gap-2">
-            <span class="font-grotesk text-[32px] sm:text-[45px] md:text-[52px] lg:text-[60px] text-cream group-hover:text-neon transition-colors duration-300 uppercase leading-none">VER</span>
-            <div class="flex flex-col font-grotesk text-[20px] sm:text-[24px] md:text-[30px] lg:text-[36px] uppercase leading-none text-cream tracking-tight">
-              <span>TODOS</span>
-              <span>LOS CASOS</span>
-            </div>
-          </div>
-          <div class="w-full bg-neon h-[6px] sm:h-[8px] lg:h-[10px] mt-2 transition-all duration-300 origin-left group-hover:scale-x-105"></div>
-        </button>
-      </div>
+    // Configuración del proyecto de Firebase "iot-esp32-cc83a"
+    const firebaseConfig = {
+      apiKey: "AIzaSyD-REEMPLAZA-CON-TU-API-KEY-REAL", 
+      authDomain: "iot-esp32-cc83a.firebaseapp.com",
+      projectId: "iot-esp32-cc83a",
+      storageBucket: "iot-esp32-cc83a.appspot.com",
+      messagingSenderId: "945163770797",
+      appId: "TU-APP-ID-DE-FIREBASE"
+    };
 
-      <!-- Card Grid -->
-      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-        
-        <!-- Card 1 -->
-        <div class="liquid-glass rounded-[32px] p-[18px] hover:bg-white/10 transition-all duration-500 group relative">
-          <!-- Square Video Container -->
-          <div class="relative w-full aspect-square rounded-[24px] overflow-hidden">
-            <!-- Autoplay loop muted video -->
-            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
-              <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_053923_22c0a6a5-313c-474c-85ff-3b50d25e944a.mp4" type="video/mp4">
-            </video>
-            
-            <!-- Number / Label (top-left) -->
-            <div class="absolute top-6 left-6 z-10 flex flex-col items-start leading-none pointer-events-none">
-              <span class="font-grotesk text-[14px] uppercase text-cream tracking-wider mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">SOPORTE AL CLIENTE</span>
-              <span class="font-grotesk text-[48px] sm:text-[56px] text-neon tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">-85%</span>
-            </div>
+    const app = initializeApp(firebaseConfig);
+    const db = getFirestore(app);
 
-            <!-- Overlay bar (absolute bottom) -->
-            <div class="absolute bottom-4 left-4 right-4 liquid-glass rounded-[20px] px-5 py-4 flex items-center justify-between z-10">
-              <div class="flex flex-col text-left">
-                <span class="text-[11px] font-mono uppercase text-cream/70 tracking-wider">RESULTADO:</span>
-                <span class="text-[16px] font-mono uppercase text-cream font-bold mt-0.5 tracking-tight">RESOLUCIÓN MÁS RÁPIDA</span>
-              </div>
-              <div class="w-12 h-12 rounded-full bg-neon flex items-center justify-center shadow-[0_8px_24px_rgba(111,255,0,0.35)] group-hover:scale-110 active:scale-95 transition-all duration-300 flex-shrink-0">
-                <svg class="w-5 h-5 stroke-[#010828]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
+    const q = query(collection(db, "sensor_data"), orderBy("timestamp", "desc"), limit(1));
 
-        <!-- Card 2 -->
-        <div class="liquid-glass rounded-[32px] p-[18px] hover:bg-white/10 transition-all duration-500 group relative">
-          <!-- Square Video Container -->
-          <div class="relative w-full aspect-square rounded-[24px] overflow-hidden">
-            <!-- Autoplay loop muted video -->
-            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
-              <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_054411_511c1b7a-fb2f-42ef-bf6c-32c0b1a06e79.mp4" type="video/mp4">
-            </video>
-            
-            <!-- Number / Label (top-left) -->
-            <div class="absolute top-6 left-6 z-10 flex flex-col items-start leading-none pointer-events-none">
-              <span class="font-grotesk text-[14px] uppercase text-cream tracking-wider mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">TIEMPO DE ENTREGA</span>
-              <span class="font-grotesk text-[48px] sm:text-[56px] text-neon tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">-50%</span>
-            </div>
-
-            <!-- Overlay bar (absolute bottom) -->
-            <div class="absolute bottom-4 left-4 right-4 liquid-glass rounded-[20px] px-5 py-4 flex items-center justify-between z-10">
-              <div class="flex flex-col text-left">
-                <span class="text-[11px] font-mono uppercase text-cream/70 tracking-wider">RESULTADO:</span>
-                <span class="text-[16px] font-mono uppercase text-cream font-bold mt-0.5 tracking-tight">ENTREGA A PYMEs</span>
-              </div>
-              <div class="w-12 h-12 rounded-full bg-neon flex items-center justify-center shadow-[0_8px_24px_rgba(111,255,0,0.35)] group-hover:scale-110 active:scale-95 transition-all duration-300 flex-shrink-0">
-                <svg class="w-5 h-5 stroke-[#010828]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Card 3 -->
-        <div class="liquid-glass rounded-[32px] p-[18px] hover:bg-white/10 transition-all duration-500 group relative">
-          <!-- Square Video Container -->
-          <div class="relative w-full aspect-square rounded-[24px] overflow-hidden">
-            <!-- Autoplay loop muted video -->
-            <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover">
-              <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_055427_ac7035b5-9f3b-4289-86fc-941b2432317d.mp4" type="video/mp4">
-            </video>
-            
-            <!-- Number / Label (top-left) -->
-            <div class="absolute top-6 left-6 z-10 flex flex-col items-start leading-none pointer-events-none">
-              <span class="font-grotesk text-[14px] uppercase text-cream tracking-wider mb-1 drop-shadow-[0_2px_4px_rgba(0,0,0,0.5)]">AGENTES IA</span>
-              <span class="font-grotesk text-[48px] sm:text-[56px] text-neon tracking-tight drop-shadow-[0_4px_8px_rgba(0,0,0,0.8)]">+300</span>
-            </div>
-
-            <!-- Overlay bar (absolute bottom) -->
-            <div class="absolute bottom-4 left-4 right-4 liquid-glass rounded-[20px] px-5 py-4 flex items-center justify-between z-10">
-              <div class="flex flex-col text-left">
-                <span class="text-[11px] font-mono uppercase text-cream/70 tracking-wider">RESULTADO:</span>
-                <span class="text-[16px] font-mono uppercase text-cream font-bold mt-0.5 tracking-tight">IMPLEMENTADOS EN LATAM</span>
-              </div>
-              <div class="w-12 h-12 rounded-full bg-neon flex items-center justify-center shadow-[0_8px_24px_rgba(111,255,0,0.35)] group-hover:scale-110 active:scale-95 transition-all duration-300 flex-shrink-0">
-                <svg class="w-5 h-5 stroke-[#010828]" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">
-                  <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-              </div>
-            </div>
-          </div>
-        </div>
-
-      </div>
-    </div>
-  </section>
-
-  <!-- SECTION 4: CTA / FINAL SECTION -->
-  <section id="contacto" class="relative w-full bg-navy pt-8 flex flex-col justify-between">
-    <div class="w-full max-w-[1831px] mx-auto px-6 sm:px-12 md:px-16 lg:px-24">
-      
-      <!-- Aspect ratio ~16/8 block video container -->
-      <div class="relative w-full aspect-[16/8] min-h-[420px] sm:min-h-[500px] lg:min-h-[600px] rounded-[32px] overflow-hidden bg-navy">
-        <!-- Autoplay loop muted video -->
-        <video autoplay loop muted playsinline class="absolute inset-0 w-full h-full object-cover z-0 pointer-events-none">
-          <source src="https://d8j0ntlcm91z4.cloudfront.net/user_38xzZboKViGWJOttwIXH07lWA1P/hf_20260331_055729_72d66327-b59e-4ae9-bb70-de6ccb5ecdb0.mp4" type="video/mp4">
-        </video>
-        <!-- Dark overlay -->
-        <div class="absolute inset-0 bg-[#010828]/70 z-10"></div>
-
-        <!-- Content Row overlay -->
-        <div class="absolute inset-0 flex flex-col justify-center items-end text-right px-6 sm:px-12 lg:pr-[18%] lg:pl-[15%] z-20">
-          <!-- Cursive Accent & Title Block Container -->
-          <div class="relative flex flex-col items-end max-w-[750px]">
-            <!-- Overlaid cursive accent -->
-            <span class="font-condiment text-neon normal-case text-[17px] sm:text-[36px] md:text-[52px] lg:text-[68px] absolute -left-6 -top-8 sm:-left-24 sm:-top-16 lg:-left-32 lg:-top-20 -rotate-[8deg] mix-blend-exclusion opacity-95 pointer-events-none select-none">
-              vamos
-            </span>
-
-            <!-- Heading -->
-            <h2 class="font-grotesk text-[16px] sm:text-[32px] md:text-[48px] lg:text-[60px] uppercase text-cream leading-[1.05] tracking-tight text-right">
-              <div class="mb-4 sm:mb-8 lg:mb-12 text-neon">SÍGUEME.</div>
-              <div>AUTOMATIZA LO REPETITIVO.</div>
-              <div>RECUPERA TU TIEMPO.</div>
-              <div>ESCALA SIN ROMPERTE.</div>
-            </h2>
-
-            <!-- Paragraph -->
-            <p class="font-mono text-[11px] sm:text-[12px] lg:text-[13px] uppercase text-cream/70 max-w-[420px] mt-6 sm:mt-8 leading-relaxed">
-              ¿TE SIRVIÓ? SÍGUEME Y TE CUENTO LO QUE SÍ TE VA A SERVIR.
-            </p>
-          </div>
-        </div>
-
-        <!-- Social Icons (bottom-left overlay) -->
-        <div class="absolute left-[8%] bottom-[12%] sm:bottom-[15%] lg:bottom-[18%] z-20 liquid-glass rounded-[0.5rem] sm:rounded-[1rem] lg:rounded-[1.25rem] w-[14vw] min-w-[56px] sm:w-[14.375rem] md:w-[10.78125rem] lg:w-[16.77rem] flex flex-col overflow-hidden">
-          <!-- Instagram -->
-          <a href="https://instagram.com" target="_blank" aria-label="INSTAGRAM" class="w-full py-3 sm:py-5 lg:py-6 flex justify-center items-center hover:bg-white/10 border-b border-white/10 transition-colors duration-300 group">
-            <svg class="w-[20px] h-[20px] stroke-cream group-hover:stroke-neon transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
-              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
-              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
-            </svg>
-          </a>
-          <!-- Mail -->
-          <a href="mailto:hola@miss.ia" aria-label="CORREO ELECTRÓNICO" class="w-full py-3 sm:py-5 lg:py-6 flex justify-center items-center hover:bg-white/10 border-b border-white/10 transition-colors duration-300 group">
-            <svg class="w-[20px] h-[20px] stroke-cream group-hover:stroke-neon transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"></path>
-              <polyline points="22,6 12,13 2,6"></polyline>
-            </svg>
-          </a>
-          <!-- LinkedIn -->
-          <a href="https://linkedin.com" target="_blank" aria-label="LINKEDIN" class="w-full py-3 sm:py-5 lg:py-6 flex justify-center items-center hover:bg-white/10 transition-colors duration-300 group">
-            <svg class="w-[20px] h-[20px] stroke-cream group-hover:stroke-neon transition-colors duration-300" viewBox="0 0 24 24" fill="none" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-              <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-2-2 2 2 0 0 0-2 2v7h-4v-7a6 6 0 0 1 6-6z"></path>
-              <rect x="2" y="9" width="4" height="12"></rect>
-              <circle cx="4" cy="4" r="2"></circle>
-            </svg>
-          </a>
-        </div>
-      </div>
-
-      <!-- Footer below video block -->
-      <footer class="w-full py-8 flex justify-between items-center z-20 relative">
-        <span class="font-grotesk text-[12px] uppercase text-cream/60 tracking-wider">MISS.IA</span>
-        <a href="https://instagram.com" target="_blank" class="font-condiment text-[20px] sm:text-[24px] text-neon normal-case hover:scale-105 active:scale-95 transition-transform duration-300">@miss.ia1</a>
-      </footer>
-
-    </div>
-  </section>
-
-  <!-- INTERACTIVE FAQ MODAL (Liquid Glass style) -->
-  <div id="faqModal" class="fixed inset-0 z-[100] flex items-center justify-center p-4 bg-navy/80 backdrop-blur-md opacity-0 pointer-events-none transition-all duration-300">
-    <div class="w-full max-w-[650px] liquid-glass rounded-[32px] p-8 sm:p-10 flex flex-col gap-6 text-cream shadow-2xl relative">
-      <!-- Close button -->
-      <button onclick="closeFaqModal()" aria-label="CERRAR FAQ" class="absolute top-6 right-6 w-8 h-8 rounded-full border border-cream/20 hover:border-neon flex items-center justify-center hover:bg-white/5 transition-all duration-300">
-        <svg class="w-4 h-4 stroke-cream" fill="none" viewBox="0 0 24 24" stroke-width="2">
-          <line x1="18" y1="6" x2="6" y2="18"></line>
-          <line x1="6" y1="6" x2="18" y2="18"></line>
-        </svg>
-      </button>
-
-      <!-- Modal Header -->
-      <div class="flex flex-col gap-1 mt-2">
-        <h3 class="font-grotesk text-[28px] sm:text-[36px] uppercase leading-none text-cream">PREGUNTAS FRECUENTES</h3>
-        <span class="font-condiment text-neon text-[24px] -rotate-1 self-start ml-2 pointer-events-none">miss.ia faq</span>
-      </div>
-
-      <!-- FAQ Items Accordion -->
-      <div class="flex flex-col gap-4 overflow-y-auto no-scrollbar max-h-[400px] pr-2 mt-2">
-        <!-- FAQ 1 -->
-        <div class="border-b border-white/10 pb-4">
-          <button onclick="toggleAccordion(1)" class="w-full flex justify-between items-center text-left py-2 font-mono uppercase font-bold text-[13px] sm:text-[14px] text-cream hover:text-neon transition-colors duration-300">
-            <span>1. ¿QUÉ ES MISS.IA Y A QUIÉN SE DIRIGE?</span>
-            <svg id="arrow-1" class="w-4 h-4 stroke-cream transition-transform duration-300 transform" fill="none" viewBox="0 0 24 24" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div id="answer-1" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-            <p class="font-mono uppercase text-[11px] sm:text-[12px] text-cream/70 pt-2 leading-relaxed">
-              ES UNA MARCA DE AGENTES DE INTELIGENCIA ARTIFICIAL OPTIMIZADA PARA PEQUEÑAS Y MEDIANAS EMPRESAS (PYMEs) EN LATINOAMÉRICA. DISEÑAMOS E IMPLEMENTAMOS AGENTES DE IA PARA ELIMINAR EL TRABAJO MANUAL, OPTIMIZAR EL SOPORTE Y PERMITIRTE ESCALAR TU OPERACIÓN SIN DUPLICAR TU EQUIPO.
-            </p>
-          </div>
-        </div>
-
-        <!-- FAQ 2 -->
-        <div class="border-b border-white/10 pb-4">
-          <button onclick="toggleAccordion(2)" class="w-full flex justify-between items-center text-left py-2 font-mono uppercase font-bold text-[13px] sm:text-[14px] text-cream hover:text-neon transition-colors duration-300">
-            <span>2. ¿CÓMO SE INTEGRAN ESTOS AGENTES EN MI NEGOCIO?</span>
-            <svg id="arrow-2" class="w-4 h-4 stroke-cream transition-transform duration-300 transform" fill="none" viewBox="0 0 24 24" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div id="answer-2" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-            <p class="font-mono uppercase text-[11px] sm:text-[12px] text-cream/70 pt-2 leading-relaxed">
-              LOS AGENTES SE CONECTAN A TUS CANALES ACTUALES (WHATSAPP, INSTAGRAM DM, CORREO ELECTRÓNICO O TU CRM). SE ALIMENTAN DE TU BASE DE CONOCIMIENTOS DE PRODUCTOS O DE TU HISTORIAL OPERATIVO PARA BRINDAR RESPUESTAS PRECISAS E INTERACTUAR CON TUS SISTEMAS EN TIEMPO REAL.
-            </p>
-          </div>
-        </div>
-
-        <!-- FAQ 3 -->
-        <div class="border-b border-white/10 pb-4">
-          <button onclick="toggleAccordion(3)" class="w-full flex justify-between items-center text-left py-2 font-mono uppercase font-bold text-[13px] sm:text-[14px] text-cream hover:text-neon transition-colors duration-300">
-            <span>3. ¿CUÁL ES EL TIEMPO PROMEDIO DE IMPLEMENTACIÓN?</span>
-            <svg id="arrow-3" class="w-4 h-4 stroke-cream transition-transform duration-300 transform" fill="none" viewBox="0 0 24 24" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div id="answer-3" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-            <p class="font-mono uppercase text-[11px] sm:text-[12px] text-cream/70 pt-2 leading-relaxed">
-              CADA PROYECTO TIENE UN TIEMPO OPERATIVO DE ENTREGA REDUCIDO A LA MITAD EN COMPARACIÓN A DESARROLLOS A MEDIDA TRADICIONALES. DEPENDIENDO DE LA COMPLEJIDAD, LA IMPLEMENTACIÓN DE TUS AGENTES IA COMPLETOS TOMA GENERALMENTE DE 2 A 4 SEMANAS.
-            </p>
-          </div>
-        </div>
-
-        <!-- FAQ 4 -->
-        <div class="border-b border-white/10 pb-4">
-          <button onclick="toggleAccordion(4)" class="w-full flex justify-between items-center text-left py-2 font-mono uppercase font-bold text-[13px] sm:text-[14px] text-cream hover:text-neon transition-colors duration-300">
-            <span>4. ¿QUÉ RESULTADOS REALES HAN LOGRADO?</span>
-            <svg id="arrow-4" class="w-4 h-4 stroke-cream transition-transform duration-300 transform" fill="none" viewBox="0 0 24 24" stroke-width="2">
-              <polyline points="6 9 12 15 18 9"></polyline>
-            </svg>
-          </button>
-          <div id="answer-4" class="max-h-0 overflow-hidden transition-all duration-300 ease-in-out">
-            <p class="font-mono uppercase text-[11px] sm:text-[12px] text-cream/70 pt-2 leading-relaxed">
-              HEMOS IMPLEMENTADO MÁS DE 300 AGENTES EN LATAM LOGRANDO:
-              <br>• REDUCCIÓN DEL 85% EN EL TIEMPO DE RESPUESTA DE SOPORTE AL CLIENTE.
-              <br>• REDUCCIÓN DE TIEMPO DE ENTREGA A LA MITAD EN PROCESOS DE VENTAS Y CALIFICACIÓN.
-              <br>• LIBERACIÓN OPERATIVA TOTAL DE EQUIPOS COMERCIALES.
-            </p>
-          </div>
-        </div>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    // FAQ Modal Functions
-    function openFaqModal() {
-      const modal = document.getElementById('faqModal');
-      modal.classList.remove('opacity-0', 'pointer-events-none');
-      modal.classList.add('opacity-100');
-    }
-
-    function closeFaqModal() {
-      const modal = document.getElementById('faqModal');
-      modal.classList.remove('opacity-100');
-      modal.classList.add('opacity-0', 'pointer-events-none');
-      
-      // Close all accordions on close
-      for(let i=1; i<=4; i++) {
-        const answer = document.getElementById(`answer-${i}`);
-        const arrow = document.getElementById(`arrow-${i}`);
-        answer.style.maxHeight = null;
-        arrow.classList.remove('rotate-180');
-      }
-    }
-
-    function toggleAccordion(id) {
-      const answer = document.getElementById(`answer-${id}`);
-      const arrow = document.getElementById(`arrow-${id}`);
-      
-      // Toggle current accordion
-      if (answer.style.maxHeight) {
-        answer.style.maxHeight = null;
-        arrow.classList.remove('rotate-180');
-      } else {
-        // Close others
-        for(let i=1; i<=4; i++) {
-          if (i !== id) {
-            document.getElementById(`answer-${i}`).style.maxHeight = null;
-            document.getElementById(`arrow-${i}`).classList.remove('rotate-180');
-          }
+    onSnapshot(q, (snapshot) => {
+      snapshot.forEach((doc) => {
+        const data = doc.data();
+        document.getElementById("temp-val").innerText = `${data.temperatura.toFixed(1)} °C`;
+        document.getElementById("hum-val").innerText = `${data.humedad.toFixed(1)} %`;
+        document.getElementById("disp-id").innerText = data.dispositivoId || "Desconocido";
+        if (data.timestamp) {
+          const date = data.timestamp.toDate();
+          document.getElementById("last-time").innerText = date.toLocaleTimeString();
         }
-        answer.style.maxHeight = answer.scrollHeight + "px";
-        arrow.classList.add('rotate-180');
-      }
-    }
-
-    // Close modal on escape key press
-    window.addEventListener('keydown', function(event) {
-      if (event.key === 'Escape') {
-        closeFaqModal();
-      }
-    });
-
-    // Close modal on background click
-    document.getElementById('faqModal').addEventListener('click', function(event) {
-      if (event.target === this) {
-        closeFaqModal();
-      }
+      });
     });
   </script>
-
 </body>
 </html>

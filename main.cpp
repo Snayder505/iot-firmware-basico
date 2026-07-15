@@ -1,14 +1,16 @@
 #include <Arduino.h>
-#include <WiFi.h>
-#include <HTTPClient.h>
 #include <DHT.h>
+#include <HTTPClient.h>
+#include <WiFi.h>
 
 // Configuración de red Wi-Fi
-const char* ssid = "TU_SSID_WIFI";
-const char* password = "TU_PASSWORD_WIFI";
+const char *ssid = "NetXander 2.4G";
+const char *password = "patrick1103902241";
 
-// URL de tu Firebase Cloud Function (reemplaza con la que te dé Firebase deploy)
-const char* serverUrl = "https://receivesensordata-xxxxxx-uc.a.run.app";
+// URL de tu Firebase Cloud Function (reemplaza con la que te dé Firebase
+// deploy)
+const char *serverUrl =
+    "https://console.firebase.google.com/project/iot-esp32-cc83a/overview";
 
 #define DHTPIN 4
 #define DHTTYPE DHT11
@@ -60,7 +62,8 @@ void loop() {
     http.addHeader("Content-Type", "application/json");
 
     // Construir JSON payload
-    String jsonPayload = "{\"temperatura\":" + String(t) + ",\"humedad\":" + String(h) + "}";
+    String jsonPayload =
+        "{\"temperatura\":" + String(t) + ",\"humedad\":" + String(h) + "}";
 
     Serial.print("Enviando JSON: ");
     Serial.println(jsonPayload);

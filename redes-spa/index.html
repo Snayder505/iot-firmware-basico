@@ -1,0 +1,759 @@
+<!DOCTYPE html>
+<html lang="es" class="scroll-smooth">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Diseño y optimización de redes e infraestructura de telecomunicaciones. Explora el viaje interactivo del dato, el atlas digital y simulador de consola Cisco.">
+  <title>Danbe NetEngineer — Diseñando el Sistema Nervioso Digital</title>
+
+  <!-- Google Fonts: Space Grotesk (Titulares) & Inter (Lectura) & Fira Code (Monospace) -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Inter:wght@300;400;500;600&family=Fira+Code:wght@400;500;700&display=swap" rel="stylesheet">
+
+  <link rel="stylesheet" href="style.css">
+</head>
+<body class="bg-[#050505] text-[#f8fafc] font-sans overflow-x-hidden selection:bg-[#00ff66] selection:text-[#050505]">
+
+  <!-- Textura digital de grano de fondo -->
+  <div class="grain-overlay" aria-hidden="true"></div>
+
+  <!-- Barra de navegación fija con blur y neón -->
+  <header class="navbar" id="mainHeader">
+    <div class="navbar-container">
+      <a href="#hero" class="logo">
+        <span class="logo-bracket">[</span>
+        <span class="logo-text">NET.ENGINEER</span>
+        <span class="logo-bracket">]</span>
+      </a>
+      <nav class="nav-links" id="navLinks">
+        <a href="#hero" class="nav-item">Inicio</a>
+        <a href="#viaje" class="nav-item">Viaje del Dato</a>
+        <a href="#atlas" class="nav-item">Atlas Telecom</a>
+        <a href="#glosario" class="nav-item">Glosario</a>
+        <a href="#terminal" class="nav-item btn-terminal">Terminal</a>
+      </nav>
+      <!-- Botón de menú para móviles -->
+      <button class="mobile-toggle" id="mobileMenuBtn" aria-label="Abrir Menú">
+        <span></span>
+        <span></span>
+        <span></span>
+      </button>
+    </div>
+  </header>
+
+  <!-- SECCIÓN 1: HERO / INTRODUCCIÓN VISUAL -->
+  <section id="hero" class="hero-section min-h-screen flex items-center relative py-20 lg:py-0">
+    <div class="container grid-container lg:grid-cols-2 gap-12 items-center">
+      <!-- Contenido de texto -->
+      <div class="hero-content fade-in-section">
+        <div class="tag-status">
+          <span class="status-dot pulsing-green"></span>
+          <span class="tag-text">SISTEMA OPERATIVO ACTIVO</span>
+        </div>
+        <h1 class="hero-title text-4xl sm:text-5xl lg:text-6xl font-display font-bold leading-tight">
+          Diseñando el <span class="highlight-cyan">sistema nervioso</span> del mundo digital.
+        </h1>
+        <p class="hero-description text-lg text-[#8fa0bc] mt-6 max-w-xl">
+          Como ingeniero en redes, traduzco el caos en conexiones. Diseñando topologías de alta disponibilidad, enrutando billones de bits y protegiendo los caminos invisibles que mantienen a la humanidad en línea.
+        </p>
+        <div class="hero-actions mt-8 flex flex-wrap gap-4">
+          <a href="#viaje" class="btn btn-primary">Iniciar Travesía</a>
+          <a href="#terminal" class="btn btn-outline">Ejecutar Consola</a>
+        </div>
+      </div>
+
+      <!-- Ilustración Router/Switch 3D Minimalista en SVG -->
+      <div class="hero-visual fade-in-section flex justify-center items-center">
+        <div class="visual-wrapper">
+          <svg viewBox="0 0 500 500" class="svg-router-3d" aria-label="Router 3D Minimalista con Luces LED">
+            <defs>
+              <linearGradient id="cyanGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00d2ff" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#006699" stop-opacity="0.2"/>
+              </linearGradient>
+              <linearGradient id="neonGreenGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#00ff66" stop-opacity="0.8"/>
+                <stop offset="100%" stop-color="#009933" stop-opacity="0.1"/>
+              </linearGradient>
+              <linearGradient id="rackGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+                <stop offset="0%" stop-color="#1e293b" stop-opacity="0.9"/>
+                <stop offset="100%" stop-color="#0f172a" stop-opacity="0.9"/>
+              </linearGradient>
+              <filter id="glowGreen" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+              <filter id="glowCyan" x="-20%" y="-20%" width="140%" height="140%">
+                <feGaussianBlur stdDeviation="6" result="blur" />
+                <feComposite in="SourceGraphic" in2="blur" operator="over" />
+              </filter>
+            </defs>
+
+            <!-- Líneas de datos de fondo en movimiento -->
+            <path d="M 50,380 L 180,315 M 450,120 L 320,185 M 50,150 L 250,250 M 450,350 L 250,250" stroke="#00d2ff" stroke-width="1.5" stroke-opacity="0.25" stroke-dasharray="8,8" class="bg-flow-line"/>
+
+            <!-- Sombra de la topología -->
+            <ellipse cx="250" cy="410" rx="150" ry="30" fill="#000" opacity="0.6"/>
+
+            <!-- CAPA 3: DISPOSITIVO INFERIOR (SWITCH) -->
+            <g class="rack-layer layer-3" transform="translate(0, 80)">
+              <!-- Base lateral izquierda -->
+              <path d="M 100,250 L 250,325 L 250,355 L 100,280 Z" fill="url(#rackGrad)" stroke="#334155" stroke-width="1"/>
+              <!-- Base lateral derecha -->
+              <path d="M 250,325 L 400,250 L 400,280 L 250,355 Z" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+              <!-- Tapa superior switch -->
+              <path d="M 100,250 L 250,175 L 400,250 L 250,325 Z" fill="#1b2537" stroke="#334155" stroke-width="1"/>
+              
+              <!-- Puertos frontales y LEDs (lado izquierdo del panel frontal) -->
+              <!-- Grupo de puertos LAN -->
+              <g transform="translate(130, 275) rotate(-26.5)">
+                <rect x="0" y="0" width="12" height="6" fill="#020617" stroke="#475569" stroke-width="1" rx="1"/>
+                <circle cx="6" cy="3" r="1.5" fill="#00ff66" class="led-blink-fast" filter="url(#glowGreen)"/>
+                <rect x="18" y="0" width="12" height="6" fill="#020617" stroke="#475569" stroke-width="1" rx="1"/>
+                <circle cx="24" cy="3" r="1.5" fill="#00d2ff" class="led-blink-slow" filter="url(#glowCyan)"/>
+                <rect x="36" y="0" width="12" height="6" fill="#020617" stroke="#475569" stroke-width="1" rx="1"/>
+                <circle cx="42" cy="3" r="1.5" fill="#00ff66" class="led-blink-fast" filter="url(#glowGreen)"/>
+                <rect x="54" y="0" width="12" height="6" fill="#020617" stroke="#475569" stroke-width="1" rx="1"/>
+                <circle cx="60" cy="3" r="1.5" fill="#00ff66" class="led-blink-slow" filter="url(#glowGreen)"/>
+              </g>
+
+              <!-- Panel frontal derecho: Fibra óptica -->
+              <g transform="translate(280, 298) rotate(26.5)">
+                <polygon points="0,0 25,0 25,7 0,7" fill="#0f172a" stroke="#00d2ff" stroke-width="1"/>
+                <line x1="2" y1="3.5" x2="25" y2="3.5" stroke="#00d2ff" stroke-width="2" class="fiber-pulse"/>
+                <circle cx="28" cy="3.5" r="2" fill="#00d2ff" class="led-blink-fast" filter="url(#glowCyan)"/>
+              </g>
+            </g>
+
+            <!-- PILARES DE CONEXIÓN INVISIBLES ENTRE DISPOSITIVOS -->
+            <path d="M 250,220 L 250,290" stroke="#00ff66" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="4,4"/>
+
+            <!-- CAPA 2: DISPOSITIVO CENTRAL (ROUTER DE CORE) -->
+            <g class="rack-layer layer-2" transform="translate(0, 0)">
+              <!-- Base lateral izquierda -->
+              <path d="M 100,210 L 250,285 L 250,315 L 100,240 Z" fill="url(#rackGrad)" stroke="#334155" stroke-width="1"/>
+              <!-- Base lateral derecha -->
+              <path d="M 250,285 L 400,210 L 400,240 L 250,315 Z" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+              <!-- Tapa superior router -->
+              <path d="M 100,210 L 250,135 L 400,210 L 250,285 Z" fill="#1b2537" stroke="#475569" stroke-width="1"/>
+              
+              <!-- LEDs de estado del sistema -->
+              <g transform="translate(130, 235) rotate(-26.5)">
+                <!-- PWR LED -->
+                <circle cx="0" cy="3" r="2.5" fill="#00ff66" filter="url(#glowGreen)"/>
+                <!-- SYS LED -->
+                <circle cx="10" cy="3" r="2" fill="#00ff66" class="led-blink-slow" filter="url(#glowGreen)"/>
+                <!-- ALM LED -->
+                <circle cx="20" cy="3" r="2" fill="#020617"/>
+              </g>
+
+              <!-- Módulos de SFP+ -->
+              <g transform="translate(260, 255) rotate(26.5)">
+                <rect x="0" y="0" width="16" height="8" fill="#1e293b" stroke="#334155" rx="1"/>
+                <circle cx="5" cy="4" r="1.5" fill="#00d2ff" class="led-blink-fast" filter="url(#glowCyan)"/>
+                <circle cx="11" cy="4" r="1.5" fill="#00ff66" class="led-blink-fast" filter="url(#glowGreen)"/>
+                <rect x="25" y="0" width="16" height="8" fill="#1e293b" stroke="#334155" rx="1"/>
+                <circle cx="30" cy="4" r="1.5" fill="#00d2ff" class="led-blink-slow" filter="url(#glowCyan)"/>
+                <circle cx="36" cy="4" r="1.5" fill="#00ff66" class="led-blink-fast" filter="url(#glowGreen)"/>
+              </g>
+            </g>
+
+            <!-- PILARES DE CONEXIÓN INVISIBLES ENTRE DISPOSITIVOS -->
+            <path d="M 250,140 L 250,210" stroke="#00d2ff" stroke-width="2" stroke-opacity="0.3" stroke-dasharray="4,4"/>
+
+            <!-- CAPA 1: DISPOSITIVO SUPERIOR (FIREWALL INTEGRADO) -->
+            <g class="rack-layer layer-1" transform="translate(0, -80)">
+              <!-- Base lateral izquierda -->
+              <path d="M 100,170 L 250,245 L 250,275 L 100,200 Z" fill="url(#rackGrad)" stroke="#475569" stroke-width="1"/>
+              <!-- Base lateral derecha -->
+              <path d="M 250,245 L 400,170 L 400,200 L 250,275 Z" fill="#0f172a" stroke="#1e293b" stroke-width="1"/>
+              <!-- Tapa superior firewall con diseño de disipación térmica -->
+              <path d="M 100,170 L 250,95 L 400,170 L 250,245 Z" fill="#202d42" stroke="#475569" stroke-width="1"/>
+              
+              <!-- Ranuras de ventilación impresas en la tapa -->
+              <path d="M 170,145 L 210,125 M 190,155 L 230,135 M 210,165 L 250,145 M 250,165 L 290,145 M 270,175 L 310,155 M 290,185 L 330,165" stroke="#0f172a" stroke-width="2"/>
+
+              <!-- Líneas de datos saliendo de la tapa -->
+              <path d="M 250,170 Q 250,80 320,40" stroke="#00ff66" stroke-width="2" fill="none" stroke-opacity="0.6" stroke-dasharray="5,5" class="data-stream-up"/>
+
+              <!-- Pantalla de Estado LCD frontal -->
+              <g transform="translate(130, 195) rotate(-26.5)">
+                <rect x="0" y="0" width="45" height="10" fill="#020828" stroke="#334155" rx="1"/>
+                <text x="4" y="8" fill="#00d2ff" font-family="monospace" font-size="6" font-weight="bold">SECURE.OK</text>
+              </g>
+            </g>
+
+            <!-- Nodos y satélites orbitando alrededor de la pila de red -->
+            <g class="orbit-nodes">
+              <!-- Nodo 1 -->
+              <circle cx="80" cy="180" r="6" fill="#00d2ff" filter="url(#glowCyan)"/>
+              <line x1="80" y1="180" x2="150" y2="210" stroke="#00d2ff" stroke-width="1" stroke-opacity="0.3"/>
+              <!-- Nodo 2 -->
+              <circle cx="410" cy="220" r="5" fill="#00ff66" filter="url(#glowGreen)"/>
+              <line x1="410" y1="220" x2="330" y2="240" stroke="#00ff66" stroke-width="1" stroke-opacity="0.3"/>
+              <!-- Nodo 3 (Internet WAN) -->
+              <circle cx="320" cy="40" r="8" fill="#00ff66" filter="url(#glowGreen)"/>
+              <text x="335" y="45" fill="#00ff66" font-family="monospace" font-size="10" font-weight="bold">WAN</text>
+            </g>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 2: EL VIAJE INTERACTIVO DEL DATO -->
+  <section id="viaje" class="data-journey-section py-24 border-t border-slate-900 bg-[#080c14] relative">
+    <div class="container">
+      <div class="section-header text-center max-w-3xl mx-auto mb-16 fade-in-section">
+        <span class="section-tag">SIMULADOR DE PROTOCOLOS</span>
+        <h2 class="section-title text-3xl sm:text-4xl font-display font-bold mt-2">
+          El viaje interactivo de un <span class="highlight-green">paquete de datos</span>
+        </h2>
+        <p class="section-subtitle text-[#8fa0bc] mt-4">
+          ¿Alguna vez te has preguntado qué pasa cuando envías un "Hola"? Escribe tu mensaje abajo, inicia la travesía y observa cómo se encapsula y viaja a través del modelo TCP/IP.
+        </p>
+      </div>
+
+      <!-- Simulador interactivo panel principal -->
+      <div class="simulator-card liquid-glass fade-in-section">
+        <!-- Input & Gatillo -->
+        <div class="input-panel">
+          <div class="input-group">
+            <label for="userMessage" class="input-label">Mensaje a transmitir (Payload):</label>
+            <input type="text" id="userMessage" class="message-input" placeholder="Escribe un mensaje secreto..." value="¡Hola, Redes del Mundo!">
+          </div>
+          <button id="btnSend" class="btn btn-primary btn-glow-green">
+            [ Enviar Mensaje e Iniciar Travesía ]
+          </button>
+        </div>
+
+        <!-- Diagrama Horizontal Animado -->
+        <div class="journey-flow-wrapper">
+          <div class="journey-timeline-line"></div>
+          
+          <div class="grid-container grid-cols-1 md:grid-cols-4 gap-8 relative z-10">
+            <!-- Capa 1: Aplicación -->
+            <div class="step-card active" id="step-app">
+              <div class="step-indicator">
+                <span class="step-num">1</span>
+                <span class="step-line-status"></span>
+              </div>
+              <div class="step-icon-box">
+                <!-- SVG Candado interactivo -->
+                <svg viewBox="0 0 64 64" class="svg-step-icon">
+                  <rect x="16" y="26" width="32" height="26" rx="3" fill="none" stroke="#00d2ff" stroke-width="3"/>
+                  <path d="M 24,26 L 24,18 C 24,13.6 27.6,10 32,10 C 36.4,10 40,13.6 40,18 L 40,26" fill="none" stroke="#00d2ff" stroke-width="3" stroke-linecap="round" class="lock-shackle"/>
+                  <circle cx="32" cy="37" r="3" fill="#00d2ff"/>
+                  <line x1="32" y1="40" x2="32" y2="46" stroke="#00d2ff" stroke-width="2"/>
+                </svg>
+              </div>
+              <h3 class="step-title">1. Capa de Aplicación</h3>
+              <p class="step-label">El Mensaje & Cifrado</p>
+              <div class="step-data-badge">HTTPS / TLS</div>
+            </div>
+
+            <!-- Capa 2: Transporte -->
+            <div class="step-card" id="step-trans">
+              <div class="step-indicator">
+                <span class="step-num">2</span>
+                <span class="step-line-status"></span>
+              </div>
+              <div class="step-icon-box">
+                <!-- SVG Segmentación interactiva -->
+                <svg viewBox="0 0 64 64" class="svg-step-icon">
+                  <!-- Cubo 1 -->
+                  <g class="block-seg" id="seg-1">
+                    <rect x="8" y="12" width="14" height="14" rx="2" fill="none" stroke="#00ff66" stroke-width="3"/>
+                    <line x1="12" y1="12" x2="12" y2="26" stroke="#00ff66" stroke-width="1" stroke-opacity="0.4"/>
+                  </g>
+                  <!-- Cubo 2 -->
+                  <g class="block-seg" id="seg-2">
+                    <rect x="25" y="25" width="14" height="14" rx="2" fill="none" stroke="#00ff66" stroke-width="3"/>
+                    <line x1="29" y1="25" x2="29" y2="39" stroke="#00ff66" stroke-width="1" stroke-opacity="0.4"/>
+                  </g>
+                  <!-- Cubo 3 -->
+                  <g class="block-seg" id="seg-3">
+                    <rect x="42" y="38" width="14" height="14" rx="2" fill="none" stroke="#00ff66" stroke-width="3"/>
+                    <line x1="46" y1="38" x2="46" y2="52" stroke="#00ff66" stroke-width="1" stroke-opacity="0.4"/>
+                  </g>
+                </svg>
+              </div>
+              <h3 class="step-title">2. Capa de Transporte</h3>
+              <p class="step-label">Segmentación TCP</p>
+              <div class="step-data-badge">Segmentos TCP</div>
+            </div>
+
+            <!-- Capa 3: Red -->
+            <div class="step-card" id="step-net">
+              <div class="step-indicator">
+                <span class="step-num">3</span>
+                <span class="step-line-status"></span>
+              </div>
+              <div class="step-icon-box">
+                <!-- SVG Direccionamiento IP y mapa de nodos -->
+                <svg viewBox="0 0 64 64" class="svg-step-icon">
+                  <!-- Nodos conectados -->
+                  <circle cx="16" cy="48" r="4" fill="none" stroke="#00d2ff" stroke-width="2" class="net-node"/>
+                  <circle cx="32" cy="16" r="4" fill="none" stroke="#00d2ff" stroke-width="2" class="net-node"/>
+                  <circle cx="48" cy="48" r="4" fill="none" stroke="#00d2ff" stroke-width="2" class="net-node"/>
+                  <!-- Caminos -->
+                  <path d="M 16,48 L 32,16 L 48,48" fill="none" stroke="#00d2ff" stroke-width="2" stroke-dasharray="4,4"/>
+                  <!-- Paquete moviéndose -->
+                  <circle cx="16" cy="48" r="3" fill="#00ff66" class="net-packet" id="route-packet"/>
+                </svg>
+              </div>
+              <h3 class="step-title">3. Capa de Red</h3>
+              <p class="step-label">Direccionamiento e IP</p>
+              <div class="step-data-badge">Paquetes IP</div>
+            </div>
+
+            <!-- Capa 4: Física -->
+            <div class="step-card" id="step-phys">
+              <div class="step-indicator">
+                <span class="step-num">4</span>
+                <span class="step-line-status"></span>
+              </div>
+              <div class="step-icon-box">
+                <!-- SVG Medios físicos binary bits -->
+                <svg viewBox="0 0 64 64" class="svg-step-icon">
+                  <path d="M 8,32 L 56,32" stroke="#00d2ff" stroke-width="3" stroke-linecap="round" class="cable-line"/>
+                  <g class="bits-group" fill="#00ff66" font-family="monospace" font-size="10" font-weight="bold">
+                    <text x="12" y="26" class="bit-1">1</text>
+                    <text x="24" y="42" class="bit-0">0</text>
+                    <text x="36" y="26" class="bit-1">1</text>
+                    <text x="48" y="42" class="bit-0">0</text>
+                  </g>
+                </svg>
+              </div>
+              <h3 class="step-title">4. Capa Física</h3>
+              <p class="step-label">Transmisión Binaria</p>
+              <div class="step-data-badge">Bits en Medios</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Terminal de Inspección Técnica de Datos en Tiempo Real -->
+        <div class="journey-inspect-panel">
+          <div class="inspect-header">
+            <span class="inspect-title"><span class="highlight-green">&gt;_</span> DETALLE DE INSPECCIÓN DE PAQUETE</span>
+            <div class="mac-controls">
+              <span class="mac-dot red"></span>
+              <span class="mac-dot yellow"></span>
+              <span class="mac-dot green"></span>
+            </div>
+          </div>
+          <div class="inspect-body">
+            <div class="inspect-content" id="inspectOutput">
+              <p class="text-muted">// Esperando transmisión de datos en la red...</p>
+              <p class="text-muted">// Escribe un mensaje arriba y pulsa el botón para comenzar el análisis dinámico de cabeceras y encapsulado.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 3: ATLAS DE TELECOMUNICACIONES -->
+  <section id="atlas" class="telecom-atlas-section py-24 bg-[#050505] relative">
+    <div class="container">
+      <div class="section-header text-center max-w-3xl mx-auto mb-16 fade-in-section">
+        <span class="section-tag">EL MAPA DE LA RED GLOBAL</span>
+        <h2 class="section-title text-3xl sm:text-4xl font-display font-bold mt-2">
+          Atlas de <span class="highlight-cyan">Telecomunicaciones</span>
+        </h2>
+        <p class="section-subtitle text-[#8fa0bc] mt-4">
+          La infraestructura mundial es un logro colosal de ingeniería. Explora algunos de los datos más fascinantes detrás de los cables oceánicos, la expansión de IP y la física del Wi-Fi.
+        </p>
+      </div>
+
+      <!-- Grid de Tarjetas Interactivas -->
+      <div class="grid-container grid-cols-1 lg:grid-cols-3 gap-8">
+        
+        <!-- Tarjeta 1: El Internet Submarino -->
+        <div class="card-atlas liquid-glass fade-in-section" tabindex="0">
+          <div class="card-visual">
+            <!-- SVG Océanos simplificados con cables submarinos brillantes -->
+            <svg viewBox="0 0 300 180" class="svg-atlas-visual" aria-label="Mapa de cables submarinos de fibra óptica">
+              <!-- Continente silueta simplificada -->
+              <!-- América -->
+              <path d="M 40,10 Q 55,40 50,70 T 35,110 T 60,160 L 50,165 Q 25,120 20,80 T 30,20 Z" fill="#1e293b" opacity="0.6"/>
+              <!-- Europa/África -->
+              <path d="M 170,15 Q 200,10 215,25 Q 185,50 170,70 T 190,130 L 160,150 Q 140,100 145,60 T 155,20 Z" fill="#1e293b" opacity="0.6"/>
+              <!-- Cables de Fibra Submarina Brillantes -->
+              <path d="M 50,45 Q 100,35 170,25" stroke="#00d2ff" stroke-width="2.5" fill="none" class="ocean-cable cable-pulse-1" filter="url(#glowCyan)"/>
+              <path d="M 52,65 Q 110,65 160,75" stroke="#00ff66" stroke-width="2" fill="none" class="ocean-cable cable-pulse-2" filter="url(#glowGreen)"/>
+              <path d="M 48,95 Q 105,110 170,120" stroke="#00d2ff" stroke-width="1.5" fill="none" class="ocean-cable cable-pulse-3" filter="url(#glowCyan)"/>
+              
+              <!-- Nodos de conexión (Estaciones de amarre) -->
+              <circle cx="50" cy="45" r="3" fill="#ffffff"/>
+              <circle cx="170" cy="25" r="3" fill="#ffffff"/>
+              <circle cx="52" cy="65" r="3" fill="#ffffff"/>
+              <circle cx="160" cy="75" r="3" fill="#ffffff"/>
+              <circle cx="48" cy="95" r="3" fill="#ffffff"/>
+              <circle cx="170" cy="120" r="3" fill="#ffffff"/>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title"><span class="bullet-cyan">■</span> El Internet Submarino</h3>
+            <p class="card-description">
+              El <strong>99% del tráfico internacional</strong> de datos viaja por cables transatlánticos de fibra óptica depositados en el lecho marino. Protegidos por pesadas capas de acero y alquitrán para soportar la presión y tiburones, estos finos hilos de vidrio llevan el pulso de la economía global, mientras que los satélites solo procesan una fracción mínima.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tarjeta 2: Direcciones IPv4 vs IPv6 -->
+        <div class="card-atlas liquid-glass fade-in-section" tabindex="0">
+          <div class="card-visual flex justify-center items-center">
+            <!-- Gráfico comparativo de escala en SVG -->
+            <svg viewBox="0 0 300 180" class="svg-atlas-visual" aria-label="Comparación de escala de direcciones IPv4 vs IPv6">
+              <!-- Círculo IPv4 (Pequeño) -->
+              <circle cx="70" cy="90" r="12" fill="none" stroke="#00d2ff" stroke-width="3" filter="url(#glowCyan)"/>
+              <text x="70" y="94" text-anchor="middle" fill="#00d2ff" font-family="monospace" font-size="8" font-weight="bold">IPv4</text>
+              <text x="70" y="120" text-anchor="middle" fill="#8fa0bc" font-size="10">4.3 Mil Millones</text>
+
+              <!-- Conexión/Escala multiplicador -->
+              <path d="M 95,90 L 175,90" stroke="#475569" stroke-width="1.5" stroke-dasharray="3,3"/>
+              <polygon points="175,87 182,90 175,93" fill="#475569"/>
+
+              <!-- Círculo IPv6 (Grande) -->
+              <circle cx="215" cy="90" r="45" fill="none" stroke="#00ff66" stroke-width="3" class="scale-ipv6-circle" filter="url(#glowGreen)"/>
+              <!-- Red de mini-nodos dentro de IPv6 -->
+              <circle cx="195" cy="70" r="2" fill="#00ff66"/>
+              <circle cx="235" cy="75" r="2" fill="#00ff66"/>
+              <circle cx="210" cy="115" r="2" fill="#00ff66"/>
+              <circle cx="225" cy="100" r="2" fill="#00ff66"/>
+              <path d="M 195,70 L 210,115 L 225,100 L 235,75 M 210,115 L 225,100" stroke="#00ff66" stroke-width="0.5" stroke-opacity="0.4"/>
+              
+              <text x="215" y="93" text-anchor="middle" fill="#00ff66" font-family="monospace" font-size="10" font-weight="bold">IPv6</text>
+              <text x="215" y="152" text-anchor="middle" fill="#8fa0bc" font-size="10">340 Sextillones</text>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title"><span class="bullet-green">■</span> Direcciones IPv4 vs IPv6</h3>
+            <p class="card-description">
+              Las direcciones IPv4 (ej. <code>192.168.1.1</code>) se agotaron oficialmente porque su formato de 32 bits solo permite 4.300 millones de combinaciones. IPv6, estructurado en 128 bits, nos proporciona <strong>340 sextillones de direcciones</strong> (340 undecillones en escala larga). Suficientes para asignar una IP propia a cada grano de arena del planeta Tierra.
+            </p>
+          </div>
+        </div>
+
+        <!-- Tarjeta 3: Frecuencias Wi-Fi -->
+        <div class="card-atlas liquid-glass fade-in-section" tabindex="0">
+          <div class="card-visual flex justify-center items-center">
+            <!-- Gráfico de ondas de frecuencia en SVG -->
+            <svg viewBox="0 0 300 180" class="svg-atlas-visual" id="wifiWaves" aria-label="Comparativo de ondas electromagnéticas Wi-Fi 2.4 vs 5 vs 6 GHz">
+              <!-- Onda 2.4 GHz (Ancha) -->
+              <path d="M 10,40 Q 30,15 50,40 T 90,40 T 130,40 T 170,40 T 210,40 T 250,40 T 290,40" fill="none" stroke="#00d2ff" stroke-width="2" class="wave-2-4" filter="url(#glowCyan)"/>
+              <text x="15" y="25" fill="#00d2ff" font-family="monospace" font-size="8">2.4 GHz (Mayor alcance, menor ancho de banda)</text>
+
+              <!-- Onda 5/6 GHz (Comprimida) -->
+              <path d="M 10,120 Q 20,95 30,120 T 50,120 T 70,120 T 90,120 T 110,120 T 130,120 T 150,120 T 170,120 T 190,120 T 210,120 T 230,120 T 250,120 T 270,120 T 290,120" fill="none" stroke="#00ff66" stroke-width="2" class="wave-5" filter="url(#glowGreen)"/>
+              <text x="15" y="105" fill="#00ff66" font-family="monospace" font-size="8">5 & 6 GHz (Menor alcance, ultra velocidad)</text>
+            </svg>
+          </div>
+          <div class="card-info">
+            <h3 class="card-title"><span class="bullet-cyan">■</span> Espectro Electromagnético</h3>
+            <p class="card-description">
+              La frecuencia de <strong>2.4 GHz</strong> funciona como un camión de carga pesada: viaja muy lejos y atraviesa paredes fácilmente, pero avanza lento y se interfiere con microondas y Bluetooth. Las frecuencias de <strong>5 GHz y 6 GHz</strong> son bólidos de Fórmula 1: transfieren terabytes de datos a velocidades de vértigo, pero sufren para cruzar paredes gruesas.
+            </p>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 4: PEQUEÑO GLOSARIO VISUAL -->
+  <section id="glosario" class="visual-glossary-section py-24 bg-[#080c14] border-t border-slate-900 relative">
+    <div class="container">
+      <div class="section-header text-center max-w-3xl mx-auto mb-16 fade-in-section">
+        <span class="section-tag">INFOGRAFÍA MINI</span>
+        <h2 class="section-title text-3xl sm:text-4xl font-display font-bold mt-2">
+          Glosario de <span class="highlight-cyan">Componentes Físicos</span>
+        </h2>
+        <p class="section-subtitle text-[#8fa0bc] mt-4">
+          Descubre los cimientos del enrutamiento de red. Haz clic en cada pestaña para inspeccionar su representación física en SVG y comprender su función en la infraestructura.
+        </p>
+      </div>
+
+      <!-- Contenedor del Acordeón/Pestañas Interactivo -->
+      <div class="glossary-container grid-container lg:grid-cols-12 gap-8 items-stretch fade-in-section">
+        
+        <!-- Pestañas del lado izquierdo (4 columnas) -->
+        <div class="lg:col-span-4 flex flex-col gap-4 glossary-tabs-wrapper">
+          
+          <!-- Tab 1: Switch -->
+          <button class="glossary-tab active" data-target="glossary-switch" aria-expanded="true" aria-controls="glossary-switch-pane">
+            <span class="tab-indicator"></span>
+            <div class="tab-content-text">
+              <span class="tab-title">Switch (Conmutador)</span>
+              <span class="tab-subtitle">El cerebro de la red de área local (LAN)</span>
+            </div>
+          </button>
+
+          <!-- Tab 2: Router -->
+          <button class="glossary-tab" data-target="glossary-router" aria-expanded="false" aria-controls="glossary-router-pane">
+            <span class="tab-indicator"></span>
+            <div class="tab-content-text">
+              <span class="tab-title">Router (Enrutador)</span>
+              <span class="tab-subtitle">El puente al mundo exterior (WAN)</span>
+            </div>
+          </button>
+
+          <!-- Tab 3: Firewall -->
+          <button class="glossary-tab" data-target="glossary-firewall" aria-expanded="false" aria-controls="glossary-firewall-pane">
+            <span class="tab-indicator"></span>
+            <div class="tab-content-text">
+              <span class="tab-title">Firewall (Cortafuegos)</span>
+              <span class="tab-subtitle">El guardia de seguridad del tráfico</span>
+            </div>
+          </button>
+        </div>
+
+        <!-- Panel de Visualización del lado derecho (8 columnas) -->
+        <div class="lg:col-span-8 display-glossary-panel liquid-glass flex flex-col justify-between">
+          
+          <!-- Contenido dinámico según la pestaña seleccionada -->
+
+          <!-- Panel 1: Switch (Activo por defecto) -->
+          <div id="glossary-switch" class="glossary-pane active" id="glossary-switch-pane" role="tabpanel">
+            <div class="pane-visual">
+              <svg viewBox="0 0 400 200" class="svg-glossary" aria-label="Diagrama lógico y físico de un Switch">
+                <!-- Chasis Switch Frontal -->
+                <rect x="20" y="70" width="360" height="60" fill="#0f172a" stroke="#334155" stroke-width="2" rx="4"/>
+                <rect x="25" y="75" width="350" height="50" fill="#020617" rx="2"/>
+
+                <!-- Puertos Ethernet RJ45 en el Switch -->
+                <g fill="#1e293b" stroke="#475569" stroke-width="1">
+                  <!-- Bloque 1 de puertos -->
+                  <rect x="40" y="85" width="16" height="12" rx="1"/>
+                  <rect x="60" y="85" width="16" height="12" rx="1"/>
+                  <rect x="80" y="85" width="16" height="12" rx="1"/>
+                  <rect x="100" y="85" width="16" height="12" rx="1"/>
+                  <!-- Bloque 2 de puertos -->
+                  <rect x="130" y="85" width="16" height="12" rx="1"/>
+                  <rect x="150" y="85" width="16" height="12" rx="1"/>
+                  <rect x="170" y="85" width="16" height="12" rx="1"/>
+                  <rect x="190" y="85" width="16" height="12" rx="1"/>
+                  <!-- Puertos inferiores -->
+                  <rect x="40" y="103" width="16" height="12" rx="1"/>
+                  <rect x="60" y="103" width="16" height="12" rx="1"/>
+                  <rect x="80" y="103" width="16" height="12" rx="1"/>
+                  <rect x="100" y="103" width="16" height="12" rx="1"/>
+                </g>
+
+                <!-- Luces LED indicadoras de enlace (parpadeando en verde) -->
+                <g fill="#00ff66" filter="url(#glowGreen)">
+                  <circle cx="48" cy="80" r="1.5" class="led-blink-fast"/>
+                  <circle cx="68" cy="80" r="1.5" class="led-blink-slow"/>
+                  <circle cx="88" cy="80" r="1.5" class="led-blink-fast"/>
+                  <circle cx="108" cy="80" r="1.5" class="led-blink-slow"/>
+                  <circle cx="138" cy="80" r="1.5" class="led-blink-fast"/>
+                  <circle cx="178" cy="80" r="1.5" class="led-blink-slow"/>
+                  
+                  <circle cx="48" cy="119" r="1.5" class="led-blink-slow"/>
+                  <circle cx="88" cy="119" r="1.5" class="led-blink-fast"/>
+                </g>
+
+                <!-- Conexiones Lógicas locales (Animación de transferencia interna) -->
+                <!-- Servidor -->
+                <rect x="280" y="82" width="70" height="36" fill="#1e293b" stroke="#00ff66" stroke-width="1.5" rx="2" class="glos-switch-server"/>
+                <text x="315" y="104" text-anchor="middle" fill="#00ff66" font-family="monospace" font-size="8" font-weight="bold">SERVER</text>
+                
+                <!-- Cables conectando puertos a Servidor -->
+                <path d="M 198,91 C 240,91 240,100 280,100" fill="none" stroke="#00ff66" stroke-width="1.5" stroke-dasharray="4,4" class="cable-flow-green"/>
+              </svg>
+            </div>
+            <div class="pane-info">
+              <h4 class="pane-title">El Cerebro del Edificio: Capa 2 (Enlace de Datos)</h4>
+              <p class="pane-text">
+                El <strong>Switch</strong> opera principalmente en la Capa 2 del modelo OSI. Su función es recibir tramas de datos de un puerto y retransmitirlas <em>únicamente</em> al dispositivo destinatario correcto, basándose en la dirección física o <strong>MAC (Media Access Control)</strong>. Esto evita colisiones de paquetes y optimiza el ancho de banda dentro de una oficina u hogar.
+              </p>
+            </div>
+          </div>
+
+          <!-- Panel 2: Router (Oculto inicialmente) -->
+          <div id="glossary-router" class="glossary-pane" id="glossary-router-pane" role="tabpanel">
+            <div class="pane-visual">
+              <svg viewBox="0 0 400 200" class="svg-glossary" aria-label="Diagrama lógico y físico de un Router">
+                <!-- Chasis Circular Simbólico de Enrutador Core -->
+                <circle cx="200" cy="100" r="60" fill="#0f172a" stroke="#00d2ff" stroke-width="2.5" filter="url(#glowCyan)"/>
+                <circle cx="200" cy="100" r="50" fill="#020617"/>
+
+                <!-- Flechas lógicas cruzadas de enrutamiento (Símbolo oficial de Cisco para Router) -->
+                <!-- Flecha de salida 1 -->
+                <path d="M 180,80 L 160,80 L 160,70 L 140,85 L 160,100 L 160,90 L 180,90 Z" fill="#00d2ff"/>
+                <!-- Flecha de salida 2 -->
+                <path d="M 220,120 L 240,120 L 240,130 L 260,115 L 240,100 L 240,110 L 220,110 Z" fill="#00d2ff"/>
+                <!-- Flecha de entrada 1 -->
+                <path d="M 180,115 L 150,115 L 150,125 L 140,110 L 150,95 L 150,105 L 180,105 Z" fill="#00ff66"/>
+                <!-- Flecha de entrada 2 -->
+                <path d="M 220,85 L 250,85 L 250,75 L 260,90 L 250,105 L 250,95 L 220,95 Z" fill="#00ff66"/>
+
+                <!-- Nodos remotos (Internet y Local) -->
+                <g fill="#1e293b" stroke="#334155" stroke-width="1.5">
+                  <circle cx="60" cy="50" r="20" rx="3"/>
+                  <text x="60" y="54" text-anchor="middle" fill="#00d2ff" font-family="monospace" font-size="8">LAN</text>
+
+                  <circle cx="340" cy="150" r="20" rx="3"/>
+                  <text x="340" y="154" text-anchor="middle" fill="#00ff66" font-family="monospace" font-size="8">WAN</text>
+                </g>
+                <!-- Cables de interconexión -->
+                <path d="M 80,50 L 140,85" stroke="#00d2ff" stroke-width="1.5" stroke-dasharray="3,3"/>
+                <path d="M 260,115 L 320,150" stroke="#00ff66" stroke-width="1.5" stroke-dasharray="3,3"/>
+              </svg>
+            </div>
+            <div class="pane-info">
+              <h4 class="pane-title">El Traductor e Interconector: Capa 3 (Red)</h4>
+              <p class="pane-text">
+                El <strong>Router</strong> opera en la Capa 3 del modelo OSI. Es el encargado de interconectar diferentes subredes (por ejemplo, tu red local doméstica con la inmensa red del proveedor de Internet). Toma decisiones en microsegundos analizando la dirección <strong>IP de destino</strong> y determinando la ruta óptima a través de tablas de enrutamiento estáticas o dinámicas (OSPF, BGP).
+              </p>
+            </div>
+          </div>
+
+          <!-- Panel 3: Firewall (Oculto inicialmente) -->
+          <div id="glossary-firewall" class="glossary-pane" id="glossary-firewall-pane" role="tabpanel">
+            <div class="pane-visual">
+              <svg viewBox="0 0 400 200" class="svg-glossary" aria-label="Diagrama lógico de un Cortafuegos / Firewall">
+                <!-- Muro de seguridad central en SVG -->
+                <g fill="#1e293b" stroke="#ef4444" stroke-width="1.5" id="brickWall">
+                  <!-- Fila 1 -->
+                  <rect x="180" y="40" width="40" height="20" rx="1"/>
+                  <!-- Fila 2 -->
+                  <rect x="160" y="60" width="40" height="20" rx="1"/>
+                  <rect x="200" y="60" width="40" height="20" rx="1"/>
+                  <!-- Fila 3 -->
+                  <rect x="180" y="80" width="40" height="20" rx="1"/>
+                  <!-- Fila 4 -->
+                  <rect x="160" y="100" width="40" height="20" rx="1"/>
+                  <rect x="200" y="100" width="40" height="20" rx="1"/>
+                  <!-- Fila 5 -->
+                  <rect x="180" y="120" width="40" height="20" rx="1"/>
+                  <!-- Fila 6 -->
+                  <rect x="160" y="140" width="40" height="20" rx="1"/>
+                  <rect x="200" y="140" width="40" height="20" rx="1"/>
+                </g>
+
+                <!-- Paquetes de entrada seguros (Puntos verdes) -->
+                <g class="firewall-safe-flow">
+                  <circle cx="50" cy="70" r="4" fill="#00ff66" filter="url(#glowGreen)" class="packet-safe"/>
+                  <circle cx="70" cy="130" r="4" fill="#00ff66" filter="url(#glowGreen)" class="packet-safe-2"/>
+                </g>
+
+                <!-- Paquetes maliciosos bloqueados (Puntos rojos rebotando en el muro) -->
+                <g class="firewall-bad-flow">
+                  <circle cx="80" cy="100" r="4" fill="#ef4444" class="packet-bad"/>
+                </g>
+
+                <!-- Tránsito exitoso de paquetes autorizados (cruzan el muro) -->
+                <path d="M 50,70 L 160,70 Q 200,70 240,70 L 350,70" fill="none" stroke="#00ff66" stroke-width="1.5" stroke-dasharray="4,4" class="path-crossing-safe"/>
+                <circle cx="320" cy="70" r="4" fill="#00ff66" filter="url(#glowGreen)" class="packet-passed"/>
+              </svg>
+            </div>
+            <div class="pane-info">
+              <h4 class="pane-title">El Guardián Digital: Seguridad Perimetral</h4>
+              <p class="pane-text">
+                El <strong>Firewall</strong> actúa como una barrera de seguridad bidireccional. Analiza las cabeceras de cada paquete de datos entrante y saliente, comparándolos con reglas de acceso estrictas (ACLs - Access Control Lists). Filtra puertos abiertos, bloquea ataques de denegación de servicio (DDoS) y previene accesos no autorizados a servidores vulnerables de la red corporativa.
+              </p>
+            </div>
+          </div>
+
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- SECCIÓN 5: MI TERMINAL / CONSOLA (SOBRE MÍ, PROYECTOS Y CONTACTO) -->
+  <section id="terminal" class="terminal-section py-24 bg-[#050505] relative">
+    <div class="container">
+      <div class="section-header text-center max-w-3xl mx-auto mb-16 fade-in-section">
+        <span class="section-tag">CONSOLA CISCO IOS / LINUX INTERACTIVA</span>
+        <h2 class="section-title text-3xl sm:text-4xl font-display font-bold mt-2">
+          Consola del <span class="highlight-green">Administrador</span>
+        </h2>
+        <p class="section-subtitle text-[#8fa0bc] mt-4">
+          Interactúa directamente con mi perfil profesional mediante la simulación de consola. Haz clic en las sugerencias rápidas o escribe los comandos en la interfaz.
+        </p>
+      </div>
+
+      <!-- Ventana de Consola Estilo Retro Cisco -->
+      <div class="console-box liquid-glass fade-in-section">
+        <!-- Barra superior del sistema operativo -->
+        <div class="console-bar">
+          <div class="console-tab-indicator">
+            <span class="terminal-icon">&gt;</span>
+            <span class="tab-title-text">Danbe@NetEngineer: ~ (ssh)</span>
+          </div>
+          <div class="window-actions">
+            <span class="win-btn minimise">_</span>
+            <span class="win-btn maximise">□</span>
+            <span class="win-btn close-x">×</span>
+          </div>
+        </div>
+
+        <!-- Pantalla de comandos -->
+        <div class="console-screen" id="consoleScreen">
+          <!-- Mensaje de bienvenida de SSH -->
+          <div class="ssh-motd">
+            <p>Secure Shell v2.4.8 (Protocolo SSH-2.0-OpenSSH_8.9p1 Ubuntu)</p>
+            <p>Welcome to Danbe's Network Portfolio Sandbox Environment.</p>
+            <p class="text-warning">¡ATENCIÓN! La consola está lista para responder a tus órdenes.</p>
+            <p class="text-muted">Escribe o presiona las sugerencias rápidas abajo para consultar.</p>
+            <p class="text-muted">-------------------------------------------------------------</p>
+          </div>
+
+          <!-- Historial de comandos (Aquí se inyectan las respuestas) -->
+          <div class="console-history" id="consoleHistory"></div>
+
+          <!-- Línea activa de entrada de comandos -->
+          <div class="console-input-line">
+            <span class="console-prompt">danbe@NetEngineer:~$</span>
+            <span class="console-input-wrapper">
+              <input type="text" id="terminalInput" class="terminal-input" autocomplete="off" autofocus aria-label="Línea de comando interactiva" placeholder="Escribe un comando...">
+              <span class="cursor" id="terminalCursor"></span>
+            </span>
+          </div>
+        </div>
+
+        <!-- Botones de Acceso Rápido / Sugerencias de Comandos -->
+        <div class="console-suggestions">
+          <span class="suggestion-label">Comandos sugeridos:</span>
+          <div class="suggestion-buttons">
+            <button class="btn-command-suggestion" data-cmd="whoami">run whoami</button>
+            <button class="btn-command-suggestion" data-cmd="show ip interface brief">show ip interface brief</button>
+            <button class="btn-command-suggestion" data-cmd="ping -c 4 contact_me">ping -c 4 contact_me</button>
+            <button class="btn-command-suggestion" data-cmd="clear">clear</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PIE DE PÁGINA (FOOTER) -->
+  <footer class="main-footer py-12 border-t border-slate-900 bg-[#020205]">
+    <div class="container flex flex-col md:flex-row justify-between items-center gap-6">
+      <div class="footer-left">
+        <p class="font-display font-bold text-lg text-white">[NET.ENGINEER]</p>
+        <p class="text-xs text-[#8fa0bc] mt-1">&copy; 2026 Danbe. Todos los derechos reservados.</p>
+      </div>
+      <div class="footer-middle flex gap-6">
+        <a href="#hero" class="footer-link">Inicio</a>
+        <a href="#viaje" class="footer-link">Viaje del Dato</a>
+        <a href="#atlas" class="footer-link">Atlas</a>
+        <a href="#glosario" class="footer-link">Glosario</a>
+        <a href="#terminal" class="footer-link">Terminal</a>
+      </div>
+      <div class="footer-right text-right">
+        <p class="text-xs text-[#8fa0bc]">Conectando Sistemas e Infraestructuras</p>
+        <div class="status-indicator mt-2 justify-end">
+          <span class="status-dot pulsing-green"></span>
+          <span class="text-xs text-[#00ff66]">All Links Operational</span>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <script src="script.js"></script>
+</body>
+</html>
