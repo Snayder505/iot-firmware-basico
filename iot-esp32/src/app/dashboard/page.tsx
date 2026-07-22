@@ -204,18 +204,18 @@ export default function DashboardPage() {
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             chat_id: "7304953271",
-            text: "⚠️ *ALERTA DESDE DASHBOARD WEB*\n\n🌡️ *Temperatura:* 36.5°C\n💧 *Humedad:* 62.0%\n🤖 *Dispositivo:* esp32_01",
-            parse_mode: "Markdown",
+            parse_mode: "HTML",
+            text: "<b>⚠️ ALERTA DE TEMPERATURA ⚠️</b>\n\n<b>Dispositivo:</b> esp32_01\n<b>Temperatura:</b> 36.5 °C\n<b>Humedad:</b> 62.0 %"
           }),
         }
       );
 
       const data = await response.json();
 
-      if (data.ok) {
+      if (response.ok) {
         setTelegramStatusMsg({
           type: "success",
-          text: "✅ ¡Alerta enviada exitosamente a tu Bot de Telegram!",
+          text: "✅ ¡Mensaje enviado con éxito a Telegram!",
         });
 
         const newRecord: AlertRecord = {
@@ -228,14 +228,14 @@ export default function DashboardPage() {
 
         setAlertHistory((prev) => [newRecord, ...prev]);
       } else {
-        console.error(data);
+        console.error("Error enviando alerta:", data);
         setTelegramStatusMsg({
           type: "error",
           text: `❌ Error al enviar a Telegram (Ver Consola): ${data.description || "Respuesta con error"}`,
         });
       }
     } catch (err: any) {
-      console.error(err);
+      console.error("Error enviando alerta:", err);
       setTelegramStatusMsg({
         type: "error",
         text: `❌ Error de red al contactar Telegram: ${err.message}`,

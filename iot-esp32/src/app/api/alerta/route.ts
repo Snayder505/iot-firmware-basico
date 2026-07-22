@@ -21,11 +21,11 @@ export async function POST(request: Request) {
 
     if (tempNum > LIMITE_TEMPERATURA) {
       const mensaje =
-        `⚠️ *¡ALERTA DE TEMPERATURA!* ⚠️\n\n` +
-        `🤖 *Dispositivo:* ${dispositivoId || "ESP32_Fisico"}\n` +
-        `🌡️ *Temperatura:* *${tempNum.toFixed(1)}°C* (Límite: ${LIMITE_TEMPERATURA}°C)\n` +
-        `💧 *Humedad:* ${humNum.toFixed(1)}%\n\n` +
-        `🚨 *Acción sugerida:* Revisar el sistema de refrigeración de inmediato.`;
+        `⚠️ ALERTA DE TEMPERATURA ⚠️\n\n` +
+        `Dispositivo: ${dispositivoId || 'ESP32_Default'}\n` +
+        `Temperatura: ${tempNum.toFixed(1)} °C\n` +
+        `Humedad: ${humNum.toFixed(1)} %\n\n` +
+        `Accion sugerida: Revisar el sistema de inmediato.`;
 
       const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
 
@@ -34,8 +34,7 @@ export async function POST(request: Request) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
-          text: mensaje,
-          parse_mode: "Markdown",
+          text: mensaje
         }),
       });
 
