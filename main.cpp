@@ -7,10 +7,9 @@
 const char *ssid = "NetXander 2.4G";
 const char *password = "patrick1103902241";
 
-// URL de tu Firebase Cloud Function (reemplaza con la que te dé Firebase
-// deploy)
+// URL de tu endpoint de alertas en Vercel
 const char *serverUrl =
-    "https://console.firebase.google.com/project/iot-esp32-cc83a/overview";
+    "https://iot-firmware-basico-viqx-two.vercel.app/api/alerta";
 
 #define DHTPIN 4
 #define DHTTYPE DHT11
@@ -61,9 +60,10 @@ void loop() {
     http.begin(serverUrl);
     http.addHeader("Content-Type", "application/json");
 
-    // Construir JSON payload
+    // Construir JSON payload compatible con tu backend
     String jsonPayload =
-        "{\"temperatura\":" + String(t) + ",\"humedad\":" + String(h) + "}";
+        "{\"dispositivoId\":\"ESP32_Fisico\",\"temperatura\":" + String(t) +
+        ",\"humedad\":" + String(h) + "}";
 
     Serial.print("Enviando JSON: ");
     Serial.println(jsonPayload);
@@ -74,7 +74,7 @@ void loop() {
       String response = http.getString();
       Serial.print("Código de respuesta HTTP: ");
       Serial.println(httpResponseCode);
-      Serial.print("Respuesta: ");
+      Serial.print("Respuesta Vercel: ");
       Serial.println(response);
     } else {
       Serial.print("Error en petición POST: ");

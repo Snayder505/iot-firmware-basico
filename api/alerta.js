@@ -1,47 +1,44 @@
 // api/alerta.js
-// Microservicio Serverless Function para enviar alertas de IoT a Telegram
-
 export default async function handler(req, res) {
-  // Solo permitimos peticiones POST (para recibir datos de sensores)
+  // Solo permitimos peticiones POST
   if (req.method !== 'POST') {
     return res.status(405).json({ error: 'Método no permitido. Usa POST.' });
   }
 
-  // Desestructuramos los datos que esperamos recibir en el cuerpo de la petición (JSON)
-  const { dispositivoId, temperatura, humedad } = req.body;
+  const { dispositivoId, temperatura, humedad } = req.body || {};
 
-  // CREDENCIALES REALES CONFIGURADAS
+  // Si no llegan datos correctos en el JSON
+  if (temperatura === undefined || humedad === undefined) {
+    return res.status(400).json({ error: 'Faltan los datos de temperatura o humedad en el cuerpo de la petición.' });
+  }
+
   const TELEGRAM_TOKEN = '8767164488:AAGG3wV14TW_rxJBePLethpZTRXvMGxJ9xQ';
   const TELEGRAM_CHAT_ID = '7304953271';
-
-  // Límite de seguridad para disparar la alerta (ejemplo: > 30°C)
   const LIMITE_TEMPERATURA = 30.0;
 
-  // Evaluamos si la temperatura supera el límite
-  if (temperatura > LIMITE_TEMPERATURA) {
-    // Creamos un mensaje formateado y bonito con emojis y Markdown
+  if (Number(temperatura) > LIMITE_TEMPERATURA) {
     const mensaje = `⚠️ *¡ALERTA DE TEMPERATURA!* ⚠️\n\n` +
-                    `🤖 *Dispositivo:* ${dispositivoId || 'ESP32_Default'}\n` +
-                    `🌡️ *Temperatura:* *${temperatura.toFixed(1)}°C* (Límite: ${LIMITE_TEMPERATURA}°C)\n` +
-                    `💧 *Humedad:* ${humedad.toFixed(1)}%\n\n` +
-                    `🚨 *Acción sugerida:* Revisar el sistema de refrigeración de inmediato.`;
+      `🤖 *Dispositivo:* ${dispositivoId || 'ESP32_Default'}\n` +
+      `🌡️ *Temperatura:* *${Number(temperatura).toFixed(1)}°C* (Límite: ${LIMITE_TEMPERATURA}°C)\n` +
+      `💧 *Humedad:* ${Number(humedad).toFixed(1)}%\n\n` +
+      `🚨 *Acción sugerida:* Revisar el sistema de refrigeración de inmediato.`;
 
     try {
-      // Preparamos la llamada a la API de Telegram sendMessage
       const telegramUrl = `https://api.telegram.org/bot${TELEGRAM_TOKEN}/sendMessage`;
+
+      // Usamos el fetch nativo de Node.js (sin imports)
       const response = await fetch(telegramUrl, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
           chat_id: TELEGRAM_CHAT_ID,
           text: mensaje,
-          parse_mode: 'Markdown' // Para que el texto se vea con negritas y emojis bonitos
+          parse_mode: 'Markdown'
         })
       });
 
       const data = await response.json();
 
-      // Verificamos si Telegram aceptó el mensaje
       if (data.ok) {
         return res.status(200).json({ status: 'Alerta enviada con éxito a Telegram.' });
       } else {
@@ -49,11 +46,9 @@ export default async function handler(req, res) {
       }
 
     } catch (error) {
-      // Capturamos cualquier error en el proceso
-      return res.status(500).json({ error: 'Error interno en el microservicio', detalles: error.message });
+      return res.status(500).json({ error: 'Error interno en el servidor', detalles: error.message });
     }
   }
 
-  // Si la temperatura es normal, respondemos que no fue necesario alertar
   return res.status(200).json({ status: 'Lectura procesada. Valores dentro del rango normal.' });
 }

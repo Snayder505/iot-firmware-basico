@@ -1,3 +1,9 @@
 {
-  "outputDirectory": "public"
+  "version": 2,
+  "rewrites": [
+    {
+      "source": "/api/alerta",
+      "destination": "/api/alerta.js"
+    }
+  ]
 }

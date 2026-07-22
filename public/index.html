@@ -4,57 +4,202 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Dashboard IoT - ESP32</title>
+  <!-- Tailwind CSS -->
   <script src="https://cdn.tailwindcss.com"></script>
+  <!-- FontAwesome Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Animación parpadeante suave para el contenedor cuando la alerta está activa */
+    @keyframes alertGlow {
+      0%, 100% {
+        box-shadow: 0 0 15px rgba(239, 68, 68, 0.4);
+        border-color: rgba(239, 68, 68, 0.8);
+      }
+      50% {
+        box-shadow: 0 0 35px rgba(239, 68, 68, 0.85);
+        border-color: rgba(248, 113, 113, 1);
+      }
+    }
+    .alert-active-card {
+      animation: alertGlow 2s infinite ease-in-out;
+    }
+
+    /* Scrollbar estilizado para la tabla de histórico de alertas */
+    .custom-scrollbar::-webkit-scrollbar {
+      width: 6px;
+      height: 6px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-track {
+      background: rgba(15, 23, 42, 0.7);
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb {
+      background: #334155;
+      border-radius: 4px;
+    }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+      background: #475569;
+    }
+
+    /* Animación suave para la entrada de nuevas filas */
+    @keyframes fadeInRow {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+    .animate-fade-in {
+      animation: fadeInRow 0.4s ease-out forwards;
+    }
+  </style>
 </head>
-<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between">
+<body class="bg-slate-900 text-white min-h-screen flex flex-col justify-between font-sans antialiased">
+  
+  <!-- Encabezado del Dashboard -->
   <header class="bg-slate-800 p-5 shadow-lg border-b border-slate-700">
     <div class="container mx-auto flex justify-between items-center">
-      <h1 class="text-2xl font-bold tracking-wider text-teal-400">
-        <i class="fa-solid fa-microchip mr-2"></i>Dashboard Telemetría IoT
+      <h1 class="text-2xl font-bold tracking-wider text-teal-400 flex items-center gap-2">
+        <i class="fa-solid fa-microchip text-teal-400"></i>Dashboard Telemetría IoT
       </h1>
-      <span class="bg-emerald-500 text-slate-950 px-3 py-1 rounded-full text-xs font-bold animate-pulse">
-        <i class="fa-solid fa-circle mr-1"></i>En Vivo
-      </span>
+      <div class="flex items-center gap-3">
+        <span class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3 py-1 rounded-full text-xs font-bold animate-pulse flex items-center gap-1.5">
+          <span class="w-2 h-2 rounded-full bg-emerald-400"></span>En Vivo
+        </span>
+      </div>
     </div>
   </header>
-  <main class="container mx-auto p-6 flex-grow">
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6 max-w-4xl mx-auto">
-      <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700 flex items-center justify-between">
+
+  <!-- Contenido Principal -->
+  <main class="container mx-auto p-4 md:p-6 flex-grow space-y-6 max-w-5xl">
+
+    <!-- Tarjetas de Métricas Principales (Temperatura y Humedad) -->
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      
+      <!-- Tarjeta Temperatura -->
+      <div id="temp-card" class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700 flex items-center justify-between transition-all duration-300">
         <div>
-          <p class="text-slate-400 font-semibold uppercase text-sm tracking-wider">Temperatura</p>
+          <p class="text-slate-400 font-semibold uppercase text-xs tracking-wider">Temperatura</p>
           <h2 id="temp-val" class="text-5xl font-extrabold mt-2 text-orange-500">-- °C</h2>
+          <p id="temp-status-sub" class="text-xs text-slate-500 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-shield-halved text-slate-400"></i> Límite normal: &le; 30.0 °C
+          </p>
         </div>
-        <div class="text-5xl text-orange-500/20 bg-orange-500/10 p-4 rounded-full">
+        <div class="text-5xl text-orange-500/20 bg-orange-500/10 p-4 rounded-2xl flex items-center justify-center">
           <i class="fa-solid fa-temperature-high animate-bounce"></i>
         </div>
       </div>
+
+      <!-- Tarjeta Humedad -->
       <div class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700 flex items-center justify-between">
         <div>
-          <p class="text-slate-400 font-semibold uppercase text-sm tracking-wider">Humedad</p>
+          <p class="text-slate-400 font-semibold uppercase text-xs tracking-wider">Humedad Relativa</p>
           <h2 id="hum-val" class="text-5xl font-extrabold mt-2 text-cyan-400">-- %</h2>
+          <p class="text-xs text-slate-500 mt-2 flex items-center gap-1">
+            <i class="fa-solid fa-droplet text-slate-400"></i> Sensor DHT11
+          </p>
         </div>
-        <div class="text-5xl text-cyan-400/20 bg-cyan-400/10 p-4 rounded-full">
-          <i class="fa-solid fa-droplet animate-pulse"></i>
+        <div class="text-5xl text-cyan-400/20 bg-cyan-400/10 p-4 rounded-2xl flex items-center justify-center">
+          <i class="fa-solid fa-water animate-pulse"></i>
         </div>
       </div>
     </div>
-    <div class="max-w-4xl mx-auto mt-6 bg-slate-800/50 border border-slate-700/50 p-4 rounded-xl text-center">
-      <p class="text-slate-400 text-sm">
-        ID Dispositivo: <span id="disp-id" class="text-teal-400 font-mono font-bold">--</span> | 
-        Última actualización: <span id="last-time" class="text-white font-semibold">--</span>
-      </p>
+
+    <!-- Barra Informativa del Dispositivo -->
+    <div class="bg-slate-800/60 border border-slate-700/60 p-4 rounded-xl flex flex-wrap justify-between items-center gap-2 text-sm">
+      <div class="flex items-center space-x-2">
+        <i class="fa-solid fa-server text-teal-400"></i>
+        <span class="text-slate-400">ID Dispositivo:</span>
+        <span id="disp-id" class="text-teal-400 font-mono font-bold">ESP32_Fisico</span>
+      </div>
+      <div class="flex items-center space-x-2">
+        <i class="fa-regular fa-clock text-slate-400"></i>
+        <span class="text-slate-400">Última actualización:</span>
+        <span id="last-time" class="text-white font-semibold">--</span>
+      </div>
     </div>
+
+    <!-- 🚨 CENTRO DE ALERTAS EN TIEMPO REAL -->
+    <section id="alert-card" class="bg-slate-800 p-6 rounded-2xl shadow-xl border border-slate-700 transition-all duration-300">
+      
+      <!-- Cabecera de Alertas (Título, Badge de Estado y Botón de Prueba) -->
+      <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-4 border-b border-slate-700/80 gap-3">
+        <div class="flex items-center space-x-3">
+          <div class="p-3 bg-red-500/10 rounded-xl text-red-500 text-xl border border-red-500/20">
+            <i class="fa-solid fa-triangle-exclamation"></i>
+          </div>
+          <div>
+            <h3 class="text-lg font-bold text-white tracking-wide flex items-center gap-2">
+              🚨 Centro de Alertas en Tiempo Real
+            </h3>
+            <p class="text-xs text-slate-400">Supervisión automática de límite térmico (&gt; 30.0 °C) y notificaciones Telegram</p>
+          </div>
+        </div>
+        
+        <div class="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+          <!-- Indicador de Estado Visual (Badge) -->
+          <span id="alert-status-badge" class="bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider flex items-center gap-2 transition-all">
+            <span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>
+            SISTEMA NORMAL
+          </span>
+
+          <!-- Botón de Simulación Manual -->
+          <button id="btn-test-alert" class="bg-red-600/20 hover:bg-red-600/40 text-red-300 border border-red-500/40 hover:border-red-500 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-1.5 transition-all active:scale-95 cursor-pointer shadow-sm">
+            <i class="fa-solid fa-vial-circle-check"></i>
+            Probar Alerta Visual
+          </button>
+        </div>
+      </div>
+
+      <!-- Banner de Alerta Destacado (Visible al activarse una alerta) -->
+      <div id="alert-banner" class="hidden mb-4 p-3.5 bg-red-950/70 border border-red-500/60 rounded-xl flex items-center justify-between text-red-200 text-xs sm:text-sm animate-pulse shadow-md">
+        <div class="flex items-center space-x-2.5">
+          <i class="fa-solid fa-bell text-red-400 text-base"></i>
+          <span><strong>¡ATENCIÓN!</strong> La temperatura ha superado el umbral crítico de 30.0 °C. Evento notificado a Telegram.</span>
+        </div>
+      </div>
+
+      <!-- Histórico de Registros de Alertas (Tabla Responsive con Scroll Interno) -->
+      <div class="overflow-x-auto rounded-xl border border-slate-700/60 bg-slate-900/40">
+        <div class="max-h-64 overflow-y-auto custom-scrollbar">
+          <table class="w-full text-left text-xs sm:text-sm">
+            <thead class="bg-slate-900/90 text-slate-400 uppercase text-[10px] sm:text-xs font-semibold tracking-wider sticky top-0 border-b border-slate-700/80 backdrop-blur">
+              <tr>
+                <th class="py-3 px-4">Fecha y Hora</th>
+                <th class="py-3 px-4">Dispositivo</th>
+                <th class="py-3 px-4">Temperatura</th>
+                <th class="py-3 px-4 text-right">Estado Telegram</th>
+              </tr>
+            </thead>
+            <tbody id="alert-history-table" class="divide-y divide-slate-700/40">
+              <tr id="no-alerts-row">
+                <td colspan="4" class="py-8 text-center text-slate-500 italic">
+                  <i class="fa-regular fa-circle-check text-2xl text-emerald-500/50 mb-1 block"></i>
+                  No se han registrado eventos de alerta. El sistema opera dentro de los rangos normales.
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
   </main>
+
+  <!-- Pie de Página -->
   <footer class="bg-slate-950 p-4 text-center text-xs text-slate-500 border-t border-slate-900">
-    <p>Desarrollado para Monitoreo de Sensores ESP32</p>
+    <p>Desarrollado para Monitoreo de Sensores ESP32 &amp; Sistema de Alertas IoT</p>
   </footer>
 
+  <!-- Lógica JavaScript en Tiempo Real -->
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-app.js";
     import { getFirestore, collection, query, orderBy, limit, onSnapshot } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
 
-    // Configuración del proyecto de Firebase "iot-esp32-cc83a"
+    // Configuración Firebase del proyecto "iot-esp32-cc83a"
     const firebaseConfig = {
       apiKey: "AIzaSyD-REEMPLAZA-CON-TU-API-KEY-REAL", 
       authDomain: "iot-esp32-cc83a.firebaseapp.com",
@@ -67,19 +212,151 @@
     const app = initializeApp(firebaseConfig);
     const db = getFirestore(app);
 
-    const q = query(collection(db, "sensor_data"), orderBy("timestamp", "desc"), limit(1));
+    // Constante de Umbral de Temperatura
+    const TEMP_THRESHOLD = 30.0;
+    let lastAlertTimestamp = 0;
 
-    onSnapshot(q, (snapshot) => {
-      snapshot.forEach((doc) => {
-        const data = doc.data();
-        document.getElementById("temp-val").innerText = `${(data.temperatura ?? 0).toFixed(1)} °C`;
-        document.getElementById("hum-val").innerText = `${(data.humedad ?? 0).toFixed(1)} %`;
-        document.getElementById("disp-id").innerText = data.dispositivoId || "Desconocido";
-        if (data.timestamp) {
-          const date = data.timestamp.toDate();
-          document.getElementById("last-time").innerText = date.toLocaleTimeString();
+    // Elementos del DOM
+    const alertStatusBadge = document.getElementById("alert-status-badge");
+    const alertCard = document.getElementById("alert-card");
+    const alertBanner = document.getElementById("alert-banner");
+    const alertHistoryTable = document.getElementById("alert-history-table");
+    const noAlertsRow = document.getElementById("no-alerts-row");
+    const btnTestAlert = document.getElementById("btn-test-alert");
+
+    /**
+     * Actualiza el indicador visual (Badge) y estilos de la tarjeta de alertas
+     */
+    function updateAlertVisualState(isAlert, temperature) {
+      if (isAlert) {
+        // Indicador Rojo Parpadeante: ¡ALERTA ACTIVA!
+        alertStatusBadge.className = "bg-red-600 text-white border border-red-400 px-3.5 py-1.5 rounded-full text-xs font-extrabold tracking-wider flex items-center gap-2 shadow-lg shadow-red-600/40 animate-pulse";
+        alertStatusBadge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-white animate-ping"></span>¡ALERTA ACTIVA! (${temperature.toFixed(1)}°C)`;
+        
+        // Aplicar estilos de advertencia a la tarjeta
+        alertCard.classList.add("alert-active-card", "border-red-500", "bg-red-950/20");
+        alertCard.classList.remove("border-slate-700", "bg-slate-800");
+
+        // Mostrar Banner Destacado
+        alertBanner.classList.remove("hidden");
+
+        // Cambiar título del navegador para llamar la atención
+        document.title = `🚨 ¡ALERTA! (${temperature.toFixed(1)}°C) - Dashboard ESP32`;
+      } else {
+        // Indicador Verde: SISTEMA NORMAL
+        alertStatusBadge.className = "bg-emerald-500/20 text-emerald-400 border border-emerald-500/30 px-3.5 py-1.5 rounded-full text-xs font-bold tracking-wider flex items-center gap-2 transition-all";
+        alertStatusBadge.innerHTML = `<span class="w-2.5 h-2.5 rounded-full bg-emerald-400"></span>SISTEMA NORMAL`;
+        
+        // Restablecer tarjeta a tono normal
+        alertCard.classList.remove("alert-active-card", "border-red-500", "bg-red-950/20");
+        alertCard.classList.add("border-slate-700", "bg-slate-800");
+
+        // Ocultar Banner
+        alertBanner.classList.add("hidden");
+
+        // Restablecer título del navegador
+        document.title = "Dashboard IoT - ESP32";
+      }
+    }
+
+    /**
+     * Inserta dinámicamente un evento de alerta en el historial (Tabla)
+     */
+    function addAlertToHistory(dispositivoId, temperatura, timestampStr = null, telegramState = "Enviado a Telegram 📱") {
+      // Eliminar fila de "Sin registros" si está presente
+      const currentNoAlertsRow = document.getElementById("no-alerts-row");
+      if (currentNoAlertsRow) {
+        currentNoAlertsRow.remove();
+      }
+
+      const formattedTime = timestampStr || new Date().toLocaleString("es-ES");
+      
+      const tr = document.createElement("tr");
+      tr.className = "hover:bg-slate-800/80 transition-colors animate-fade-in border-b border-slate-700/30";
+      tr.innerHTML = `
+        <td class="py-3 px-4 font-mono text-slate-300">${formattedTime}</td>
+        <td class="py-3 px-4 font-semibold text-teal-300">
+          <i class="fa-solid fa-microchip text-xs mr-1.5 text-slate-400"></i>${dispositivoId}
+        </td>
+        <td class="py-3 px-4 font-extrabold text-red-400">
+          ${Number(temperatura).toFixed(1)} °C
+        </td>
+        <td class="py-3 px-4 text-right">
+          <span class="inline-flex items-center gap-1.5 bg-emerald-950/60 text-emerald-400 border border-emerald-500/40 px-2.5 py-1 rounded-lg text-xs font-semibold">
+            <i class="fa-brands fa-telegram text-sky-400"></i> ${telegramState}
+          </span>
+        </td>
+      `;
+
+      // Insertar al inicio del cuerpo de la tabla para ver primero las más recientes
+      alertHistoryTable.prepend(tr);
+    }
+
+    /**
+     * Procesa las lecturas recibidas del sensor ESP32
+     */
+    function processReading(data) {
+      if (!data) return;
+
+      const temp = Number(data.temperatura ?? 0);
+      const hum = Number(data.humedad ?? 0);
+      const dispId = data.dispositivoId || "ESP32_Fisico";
+      
+      let dateStr = new Date().toLocaleString("es-ES");
+      if (data.timestamp && typeof data.timestamp.toDate === 'function') {
+        dateStr = data.timestamp.toDate().toLocaleString("es-ES");
+      }
+
+      // Actualizar tarjeta superior de telemetría
+      document.getElementById("temp-val").innerText = `${temp.toFixed(1)} °C`;
+      document.getElementById("hum-val").innerText = `${hum.toFixed(1)} %`;
+      document.getElementById("disp-id").innerText = dispId;
+      document.getElementById("last-time").innerText = dateStr;
+
+      // Evaluar estado de alerta
+      if (temp > TEMP_THRESHOLD) {
+        updateAlertVisualState(true, temp);
+        
+        // Evitar duplicar en la tabla lecturas en tiempo real con menos de 10 seg de diferencia
+        const now = Date.now();
+        if (now - lastAlertTimestamp > 10000) {
+          addAlertToHistory(dispId, temp, dateStr);
+          lastAlertTimestamp = now;
         }
+      } else {
+        updateAlertVisualState(false, temp);
+      }
+    }
+
+    // Suscripción Firestore a datos del sensor en tiempo real
+    try {
+      const q = query(collection(db, "sensor_data"), orderBy("timestamp", "desc"), limit(1));
+      onSnapshot(q, (snapshot) => {
+        snapshot.forEach((doc) => {
+          processReading(doc.data());
+        });
+      }, (error) => {
+        console.warn("Firestore snapshot en modo lectura manual o desconectado:", error);
       });
+    } catch (e) {
+      console.error("Error al conectar Firestore:", e);
+    }
+
+    // Botón manual "Probar Alerta Visual" (Simulación de 35 °C)
+    btnTestAlert.addEventListener("click", () => {
+      const simTemp = 35.0;
+      const simHum = 68.4;
+      const currentDisp = document.getElementById("disp-id").innerText !== "--" ? document.getElementById("disp-id").innerText : "ESP32_Fisico";
+      const nowStr = new Date().toLocaleString("es-ES");
+
+      // Actualizar visualmente la tarjeta de Temperatura principal a 35 °C
+      document.getElementById("temp-val").innerText = `${simTemp.toFixed(1)} °C`;
+      document.getElementById("hum-val").innerText = `${simHum.toFixed(1)} %`;
+      document.getElementById("last-time").innerText = nowStr;
+
+      // Disparar la alerta visual y añadir al registro histórico
+      updateAlertVisualState(true, simTemp);
+      addAlertToHistory(currentDisp, simTemp, nowStr, "Enviado a Telegram 📱 (Prueba)");
     });
   </script>
 </body>
