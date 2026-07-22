@@ -22,7 +22,10 @@ import {
   Bell, 
   CheckCircle2, 
   FlaskConical, 
-  Send 
+  Send,
+  Sparkles,
+  Check,
+  AlertCircle
 } from "lucide-react";
 import { useRouter, usePathname } from "next/navigation";
 import {
@@ -66,6 +69,10 @@ export default function DashboardPage() {
   // Estados para el Sistema de Alertas
   const [alertHistory, setAlertHistory] = useState<AlertRecord[]>([]);
   const [simulatedAlert, setSimulatedAlert] = useState<{ temp: number; hum: number; timeStr: string } | null>(null);
+  
+  // Estado para probar envío real a Telegram Bot
+  const [isSendingTelegram, setIsSendingTelegram] = useState(false);
+  const [telegramStatusMsg, setTelegramStatusMsg] = useState<{ type: "success" | "error"; text: string } | null>(null);
 
   const TEMP_THRESHOLD = 30.0;
 
@@ -149,7 +156,7 @@ export default function DashboardPage() {
     }
   }, [lastRecord]);
 
-  // Manejador del botón manual "Probar Alerta Visual" (Simulación de 35 °C)
+  // Manejador del botón manual "Probar Alerta Visual" (Simulación de 35 °C en pantalla)
   const handleTestAlert = () => {
     const simTemp = 35.0;
     const simHum = 68.4;
@@ -167,10 +174,73 @@ export default function DashboardPage() {
       timestamp: timeStr,
       dispositivoId: devId,
       temperatura: simTemp,
-      telegramState: "Enviado a Telegram 📱 (Prueba)",
+      telegramState: "Prueba Visual 🖥️",
     };
 
     setAlertHistory((prev) => [newRecord, ...prev]);
+  };
+
+  // Manejador del botón "Enviar Alerta Real a Telegram Bot 📱"
+  const handleSendRealTelegramAlert = async () => {
+    setIsSendingTelegram(true);
+    setTelegramStatusMsg(null);
+
+    const simTemp = 36.5;
+    const simHum = 62.0;
+    const timeStr = new Date().toLocaleString("es-ES");
+    const devId = lastRecord?.deviceId || lastRecord?.device_id || lastRecord?.dispositivoId || "ESP32_Fisico";
+
+    // Actualizar visualmente la interfaz a 36.5 °C
+    setSimulatedAlert({
+      temp: simTemp,
+      hum: simHum,
+      timeStr: timeStr,
+    });
+
+    try {
+      // Intentar primero a la API local de Next.js
+      const response = await fetch("/api/alerta", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          dispositivoId: devId,
+          temperatura: simTemp,
+          humedad: simHum,
+        }),
+      });
+
+      const resData = await response.json();
+
+      if (response.ok && (resData.status || resData.ok)) {
+        setTelegramStatusMsg({
+          type: "success",
+          text: `✅ ¡Alerta real enviada exitosamente a tu Bot de Telegram!`,
+        });
+
+        const newRecord: AlertRecord = {
+          id: Date.now().toString(),
+          timestamp: timeStr,
+          dispositivoId: devId,
+          temperatura: simTemp,
+          telegramState: "Enviado a Telegram 📱 (OK)",
+        };
+
+        setAlertHistory((prev) => [newRecord, ...prev]);
+      } else {
+        const errDetail = resData.error || resData.detalles || "Respuesta con error del servidor";
+        setTelegramStatusMsg({
+          type: "error",
+          text: `❌ Error al enviar a Telegram: ${typeof errDetail === "object" ? JSON.stringify(errDetail) : errDetail}`,
+        });
+      }
+    } catch (err: any) {
+      setTelegramStatusMsg({
+        type: "error",
+        text: `❌ Error de red al contactar la API: ${err.message}`,
+      });
+    } finally {
+      setIsSendingTelegram(false);
+    }
   };
 
   // Determinar si el dispositivo está en línea (últimos 5 min)
@@ -395,14 +465,14 @@ export default function DashboardPage() {
 
               </div>
 
-              <!-- 🚨 CENTRO DE ALERTAS EN TIEMPO REAL -->
+              {/* 🚨 CENTRO DE ALERTAS EN TIEMPO REAL */}
               <section className={`relative overflow-hidden border rounded-3xl p-6 backdrop-blur-xl transition-all duration-500 ${
                 isAlertActive
                   ? "bg-red-950/20 border-red-500/60 shadow-2xl shadow-red-950/30"
                   : "bg-slate-900/40 border-slate-800"
               }`}>
                 {/* Cabecera del Panel de Alertas */}
-                <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center pb-4 mb-4 border-b border-slate-800/80 gap-4">
+                <div className="flex flex-col lg:flex-row justify-between items-start lg:items-center pb-4 mb-4 border-b border-slate-800/80 gap-4">
                   <div className="flex items-center gap-3">
                     <div className="p-3 bg-red-500/10 rounded-2xl border border-red-500/20 text-red-400">
                       <AlertTriangle className="h-6 w-6" />
@@ -412,12 +482,12 @@ export default function DashboardPage() {
                         🚨 Centro de Alertas en Tiempo Real
                       </h2>
                       <p className="text-xs text-slate-400 mt-0.5">
-                        Supervisión de sobrecalentamiento (&gt; 30.0 °C) y notificaciones a Telegram
+                        Supervisión de sobrecalentamiento (&gt; 30.0 °C) y notificaciones a Telegram Bot
                       </p>
                     </div>
                   </div>
 
-                  <div className="flex items-center gap-3 w-full sm:w-auto justify-between sm:justify-end">
+                  <div className="flex flex-wrap items-center gap-3 w-full lg:w-auto justify-start lg:justify-end">
                     {/* Badge de Estado Visual */}
                     {isAlertActive ? (
                       <span className="bg-red-600/90 text-white border border-red-400 px-3.5 py-1.5 rounded-full text-xs font-extrabold tracking-wider flex items-center gap-2 shadow-lg shadow-red-600/40 animate-pulse">
@@ -434,22 +504,57 @@ export default function DashboardPage() {
                       </span>
                     )}
 
-                    {/* Botón Probar Alerta Visual */}
+                    {/* Botón 1: Probar Alerta Visual en Pantalla */}
                     <button
                       onClick={handleTestAlert}
-                      className="bg-red-500/10 hover:bg-red-500/20 text-red-300 border border-red-500/30 hover:border-red-500/60 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all active:scale-95 cursor-pointer shadow-sm"
+                      className="bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 px-3.5 py-1.5 rounded-xl text-xs font-semibold flex items-center gap-2 transition-all active:scale-95 cursor-pointer shadow-sm"
                     >
-                      <FlaskConical className="h-4 w-4" />
-                      Probar Alerta Visual
+                      <FlaskConical className="h-4 w-4 text-amber-400" />
+                      Probar Vista
+                    </button>
+
+                    {/* Botón 2: Probar Enviar Alerta REAL a Telegram Bot */}
+                    <button
+                      onClick={handleSendRealTelegramAlert}
+                      disabled={isSendingTelegram}
+                      className="bg-gradient-to-r from-sky-500 to-indigo-600 hover:from-sky-400 hover:to-indigo-500 text-white px-4 py-1.5 rounded-xl text-xs font-bold flex items-center gap-2 transition-all active:scale-95 cursor-pointer shadow-lg shadow-sky-500/20 disabled:opacity-50"
+                    >
+                      {isSendingTelegram ? (
+                        <>
+                          <Loader2 className="h-4 w-4 animate-spin text-white" />
+                          Enviando...
+                        </>
+                      ) : (
+                        <>
+                          <Send className="h-4 w-4 text-white" />
+                          Enviar Alerta a Telegram 📱
+                        </>
+                      )}
                     </button>
                   </div>
                 </div>
+
+                {/* Notificación de Estado de Envío Telegram */}
+                {telegramStatusMsg && (
+                  <div className={`mb-4 p-3.5 rounded-2xl border text-xs sm:text-sm flex items-center gap-3 animate-fade-in ${
+                    telegramStatusMsg.type === "success"
+                      ? "bg-emerald-950/60 border-emerald-500/50 text-emerald-200"
+                      : "bg-red-950/70 border-red-500/50 text-red-200"
+                  }`}>
+                    {telegramStatusMsg.type === "success" ? (
+                      <Check className="h-5 w-5 text-emerald-400 flex-shrink-0" />
+                    ) : (
+                      <AlertCircle className="h-5 w-5 text-red-400 flex-shrink-0" />
+                    )}
+                    <span>{telegramStatusMsg.text}</span>
+                  </div>
+                )}
 
                 {/* Banner Destacado cuando Alerta está Activa */}
                 {isAlertActive && (
                   <div className="mb-4 p-3.5 bg-red-950/70 border border-red-500/50 rounded-2xl flex items-center gap-3 text-red-200 text-xs sm:text-sm animate-pulse shadow-md">
                     <Bell className="h-5 w-5 text-red-400 flex-shrink-0" />
-                    <span><strong>¡ATENCIÓN!</strong> La temperatura ha superado el umbral crítico de 30.0 °C. Evento notificado a Telegram.</span>
+                    <span><strong>¡ATENCIÓN!</strong> La temperatura ha superado el umbral crítico de 30.0 °C. Notificación enviada al Bot de Telegram.</span>
                   </div>
                 )}
 
@@ -470,7 +575,7 @@ export default function DashboardPage() {
                           <tr>
                             <td colSpan={4} className="py-8 text-center text-slate-500 italic">
                               <CheckCircle2 className="h-6 w-6 text-emerald-500/40 mx-auto mb-2" />
-                              No se han registrado eventos de alerta. El sistema opera dentro de los rangos normales.
+                              No se han registrado eventos de alerta. Pulsa "Enviar Alerta a Telegram 📱" para hacer una prueba real con tu bot.
                             </td>
                           </tr>
                         ) : (
