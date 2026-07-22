@@ -188,7 +188,6 @@ export default function DashboardPage() {
     const simTemp = 36.5;
     const simHum = 62.0;
     const timeStr = new Date().toLocaleString("es-ES");
-    const devId = lastRecord?.deviceId || lastRecord?.device_id || lastRecord?.dispositivoId || "ESP32_Fisico";
 
     // Actualizar visualmente la interfaz a 36.5 °C
     setSimulatedAlert({
@@ -198,45 +197,48 @@ export default function DashboardPage() {
     });
 
     try {
-      // Intentar primero a la API local de Next.js
-      const response = await fetch("/api/alerta", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({
-          dispositivoId: devId,
-          temperatura: simTemp,
-          humedad: simHum,
-        }),
-      });
+      const response = await fetch(
+        "https://api.telegram.org/bot8767164488:AAGG3wV14TW_rxJBePLethpZTRXvMGxJ9xQ/sendMessage",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            chat_id: "7304953271",
+            text: "⚠️ *ALERTA DESDE DASHBOARD WEB*\n\n🌡️ *Temperatura:* 36.5°C\n💧 *Humedad:* 62.0%\n🤖 *Dispositivo:* esp32_01",
+            parse_mode: "Markdown",
+          }),
+        }
+      );
 
-      const resData = await response.json();
+      const data = await response.json();
 
-      if (response.ok && (resData.status || resData.ok)) {
+      if (data.ok) {
         setTelegramStatusMsg({
           type: "success",
-          text: `✅ ¡Alerta real enviada exitosamente a tu Bot de Telegram!`,
+          text: "✅ ¡Alerta enviada exitosamente a tu Bot de Telegram!",
         });
 
         const newRecord: AlertRecord = {
           id: Date.now().toString(),
           timestamp: timeStr,
-          dispositivoId: devId,
+          dispositivoId: "esp32_01",
           temperatura: simTemp,
-          telegramState: "Enviado a Telegram 📱 (OK)",
+          telegramState: "Enviado a Telegram 📱",
         };
 
         setAlertHistory((prev) => [newRecord, ...prev]);
       } else {
-        const errDetail = resData.error || resData.detalles || "Respuesta con error del servidor";
+        console.error(data);
         setTelegramStatusMsg({
           type: "error",
-          text: `❌ Error al enviar a Telegram: ${typeof errDetail === "object" ? JSON.stringify(errDetail) : errDetail}`,
+          text: `❌ Error al enviar a Telegram (Ver Consola): ${data.description || "Respuesta con error"}`,
         });
       }
     } catch (err: any) {
+      console.error(err);
       setTelegramStatusMsg({
         type: "error",
-        text: `❌ Error de red al contactar la API: ${err.message}`,
+        text: `❌ Error de red al contactar Telegram: ${err.message}`,
       });
     } finally {
       setIsSendingTelegram(false);
